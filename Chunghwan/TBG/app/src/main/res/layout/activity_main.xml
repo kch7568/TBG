@@ -9,27 +9,49 @@
         android:id="@+id/userIdEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="User ID"
+        android:hint="아이디"
+        android:maxLength="20"
         android:inputType="text" />
 
     <EditText
         android:id="@+id/passwordEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Password"
+        android:hint="비밀번호"
+        android:maxLength="16"
         android:inputType="textPassword" />
+
+    <EditText
+        android:id="@+id/PW"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="비밀번호 확인"
+        android:maxLength="16"
+        android:inputType="textPassword" />
+    <TextView
+        android:id="@+id/password_good"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" "
+        android:textColor="@android:color/holo_red_light"
+        android:focusable="true"
+        android:cursorVisible="false"
+        android:longClickable="false"
+        android:inputType="none" />
+
 
     <EditText
         android:id="@+id/nicknameEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Nickname"
+        android:hint="닉네임"
+        android:maxLength="16"
         android:inputType="text" />
 
     <Button
         android:id="@+id/registerButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Register" />
+        android:text="회원가입" />
 
 </LinearLayout>

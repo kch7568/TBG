@@ -49,8 +49,30 @@ public class DAO_User extends BaseDAO {
 	    }
 	}
 
+	public boolean isNickNameExists(String userNickName) {
+	    String sql = "SELECT 1 FROM User WHERE Nickname = ?";  // 1을 SELECT하여 존재 여부만 확인
+	    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        pstmt.setString(1, userNickName);
+	        ResultSet rs = pstmt.executeQuery();
+	        
+	        if (rs.next()) {
+	            // 닉네임이 존재하면 false 반환
+	            return false;
+	        } else {
+	            // 닉네임이 없으면 true 반환
+	            return true;
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return false;  // 예외가 발생하면 false 반환
+	    }
+	}
 
 
+	
+	
+	
+	
 	public boolean addUser(User user) {
 		String sql = "INSERT INTO User (User_Id, Password, Nickname) VALUES (?, ?, ?)";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {

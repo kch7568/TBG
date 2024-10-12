@@ -30,12 +30,14 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
 
         try {
+        	response.setContentType("text/plain; charset=UTF-8");
+        	
             // 로그인 시도
             Session session = loginLogout.login(userId, password);
             if (session != null) {
-                response.getWriter().write("Login successful! Session ID: " + session.getSessionId());
+                response.getWriter().write("로그인에 성공하셨습니다! \n세션ID: " + session.getSessionId());
             } else {
-                response.getWriter().write("Login failed. Invalid credentials.");
+                response.getWriter().write("로그인에 실패하셨습니다. 정보를 확인해주세요.");
             }
         } catch (SQLException e) {
             e.printStackTrace();
