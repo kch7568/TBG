@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:background="@drawable/tbg_backcolor"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegisterActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="270dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            android:text="계정을 만들고 여행을
+        시작해봐요!"
+            android:textColor="@color/black"
+            android:textSize="30dp"
+            android:textStyle="bold"></TextView>
+
+        <ImageView
+            android:id="@+id/airport"
+            android:layout_width="350dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:layout_margin="15dp"
+            app:srcCompat="@drawable/airport"></ImageView>
+
+        <EditText
+            android:id="@+id/idText"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/layout_background"
+            android:drawableStart="@drawable/login_icon"
+            android:drawableLeft="@drawable/login_icon"
+            android:hint="  아이디 입력"
+
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textColorHint="#41C2FA" />
+
+        <EditText
+            android:id="@+id/passwordText"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/layout_background"
+            android:drawableStart="@drawable/password_icon"
+            android:drawableLeft="@drawable/password_icon"
+            android:hint="  비밀번호 입력"
+            android:inputType="textPassword"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textColorHint="#41C2FA" />
+
+        <EditText
+            android:id="@+id/nicknameText"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/layout_background"
+            android:drawableStart="@drawable/nickname_icon"
+            android:drawableLeft="@drawable/nickname_icon"
+            android:hint="  닉네임 입력"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:textColorHint="#41C2FA" />
+
+        <android.widget.Button
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/layout_background_bluecolor"
+            android:hint="시작하기"
+            android:textColorHint="@color/white"
+            android:textSize="20dp"
+            android:textStyle="bold">
+        </android.widget.Button>
+
+        <TextView
+            android:layout_width="230dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="    이미 아이디가 있으신가요?"
+            android:textColor="@color/white"
+            android:textSize="17dp"
+            android:textStyle="bold"></TextView>
+
+        <TextView
+            android:id="@+id/go_loginpage"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:text="로그인 화면으로 가기"
+            android:textColor="#8380D0"
+            android:textSize="20dp"
+            android:textStyle="bold"></TextView>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

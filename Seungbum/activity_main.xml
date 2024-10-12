@@ -6,7 +6,7 @@
     android:background="@drawable/tbg_backcolor"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".LoginActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,7 +18,7 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             android:layout_gravity="center"
-            android:layout_margin="15dp"
+            android:layout_margin="30dp"
             app:srcCompat="@drawable/tbg_icon">
         </ImageView>
 
@@ -39,12 +39,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="25dp"
-            android:background="@color/white"
+            android:background="@drawable/layout_background"
             android:drawableStart="@drawable/login_icon"
             android:drawableLeft="@drawable/login_icon"
             android:hint="아이디 입력"
             android:padding="10dp"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/black"
             android:textColorHint="#41C2FA" />
 
         <EditText
@@ -54,15 +54,16 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
-            android:background="@color/white"
+            android:background="@drawable/layout_background"
             android:drawableStart="@drawable/password_icon"
             android:drawableLeft="@drawable/password_icon"
             android:hint="비밀번호 입력"
             android:padding="10dp"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/black"
             android:textColorHint="#41C2FA" />
 
         <TextView
+            android:id="@+id/findid"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="55dp"
@@ -73,6 +74,7 @@
         </TextView>
 
         <TextView
+            android:id="@+id/registerButton"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="55dp"
@@ -83,11 +85,12 @@
         </TextView>
 
         <android.widget.Button
+
             android:layout_width="280dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
-            android:background="#41C2FA"
+            android:background="@drawable/layout_background_bluecolor"
             android:text="로그인"
             android:textColor="#FFFFFF"
             android:textSize="20dp"
