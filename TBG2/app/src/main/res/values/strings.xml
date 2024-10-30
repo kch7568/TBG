@@ -2,4 +2,11 @@
     <string name="app_name">TBG</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="main_button_train">철도 버튼</string>
+    <string name="main_button_bus">고속 버스 버튼</string>
+    <string name="main_button_airplane">항공 버튼</string>
+    <string name="travle_image">여행지 이미지</string>"
+    <string name="jejudo_introduce">10월 추천! 제주도 관광 명소</string>
+    <string name="yangyang_introduce">SNS핫플 양양</string>
+    <string name="notice_board">게시판</string>
 </resources>

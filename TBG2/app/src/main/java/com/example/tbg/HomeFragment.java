@@ -1,5 +1,6 @@
 package com.example.tbg;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,6 +8,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -15,12 +18,9 @@ import android.view.ViewGroup;
  */
 public class HomeFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
@@ -28,15 +28,6 @@ public class HomeFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static HomeFragment newInstance(String param1, String param2) {
         HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
@@ -58,7 +49,56 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        ImageView imageView1 = view.findViewById(R.id.imageView1);
+        ImageView imageView2 = view.findViewById(R.id.imageView2);
+        ImageView imageView3 = view.findViewById(R.id.imageView3);
+        ImageView imageView4 = view.findViewById(R.id.imageView4);
+        ImageView imageView5 = view.findViewById(R.id.imageView5);
+
+        imageView1.setOnClickListener(v -> {
+            showTravelInfoDialog("여행지 1", "여행지 1에 대한 설명입니다.", R.drawable.travledescription1);
+        });
+
+        imageView2.setOnClickListener(v -> {
+            showTravelInfoDialog("여행지 2", "여행지 2에 대한 설명입니다.", R.drawable.travledescription2);
+        });
+
+        imageView3.setOnClickListener(v -> {
+            showTravelInfoDialog("여행지 3", "여행지 3에 대한 설명입니다.", R.drawable.travledescription3);
+        });
+
+        imageView4.setOnClickListener(v -> {
+            showTravelInfoDialog("여행지 4", "여행지 4에 대한 설명입니다.", R.drawable.travledescription4);
+        });
+
+        imageView5.setOnClickListener(v -> {
+            showTravelInfoDialog("여행지 5", "여행지 5에 대한 설명입니다.", R.drawable.travledescription5);
+        });
+
+        // 이미지 클릭 리스너 추가...
+
+        return view;
+    }
+
+    private void showTravelInfoDialog(String title, String message, int imageResId) {
+        LayoutInflater inflater = getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_travel_info, null);
+
+        ImageView dialogImageView = dialogView.findViewById(R.id.dialogImageView);
+        dialogImageView.setImageResource(imageResId);
+
+        TextView dialogTitle = dialogView.findViewById(R.id.dialogTitle);
+        dialogTitle.setText(title);
+
+        TextView dialogMessage = dialogView.findViewById(R.id.dialogMessage);
+        dialogMessage.setText(message);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setView(dialogView)
+                .setPositiveButton("확인", (dialog, which) -> dialog.dismiss())
+                .setCancelable(true)
+                .show();
     }
 }
