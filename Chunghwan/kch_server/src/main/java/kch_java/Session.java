@@ -5,11 +5,13 @@ import java.time.LocalDateTime;
 public class Session {
     private String sessionId;  // 세션 ID
     private String userId;  // 사용자 ID
+    private String nickname;   // 사용자 닉네임
     private LocalDateTime expiryTime;  // 세션 만료 시간
 
-    public Session(String sessionId, String userId) {
+    public Session(String sessionId, String userId, String nickname) {
         this.sessionId = sessionId;
         this.userId = userId;
+        this.nickname = nickname;
         this.expiryTime = LocalDateTime.now().plusHours(1);  // 기본 세션 만료 시간을 1시간 후로 설정
     }
 
@@ -30,6 +32,9 @@ public class Session {
 
     public String getUserId() {
         return userId;
+    }
+    public String getNickname() {
+        return nickname;
     }
 
     public LocalDateTime getExpiryTime() {

@@ -2,7 +2,7 @@ package kch_DAO;
 import java.sql.*;
 
 public class BaseDAO {
-    protected String driverName = "com.mysql.jdbc.Driver";
+    protected String driverName = "com.mysql.cj.jdbc.Driver";
     protected String url = "jdbc:mysql://localhost:3306/TBG";
     protected String username = "root";
     protected String password = "system";

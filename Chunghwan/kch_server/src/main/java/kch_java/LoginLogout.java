@@ -9,14 +9,15 @@ public class LoginLogout {
 
     public LoginLogout() throws SQLException, ClassNotFoundException {
         this.daoUser = new DAO_User();  // DAO 객체 생성
-        this.sessionManager = new SessionManager();  // 세션 매니저 생성
+        this.sessionManager = SessionManager.getInstance();  // 싱글톤 인스턴스 가져오기
     }
 
     // 로그인 처리
     public Session login(String userId, String password) throws SQLException {
         User user = daoUser.getUserById(userId);  // ID로 사용자 조회
         if (user != null && user.getPW().equals(password)) {  // 비밀번호 검증
-            return sessionManager.createSession(userId);  // 세션 생성 후 반환
+        	// 유저의 닉네임을 함께 세션에 저장
+            return sessionManager.createSession(userId, user.getNickName());  // 세션 생성 후 반환
         }
         return null;  // 로그인 실패 시 null 반환
     }

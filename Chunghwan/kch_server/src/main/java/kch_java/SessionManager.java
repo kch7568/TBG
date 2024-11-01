@@ -4,12 +4,30 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SessionManager {
+    private static SessionManager instance;  // 싱글톤 인스턴스  --수정
     private Map<String, Session> sessions = new HashMap<>();  // 세션을 관리할 맵
 
+    private SessionManager() {}  // private 생성자   --수정
+
+    public static synchronized SessionManager getInstance() {  ///  --수정
+        if (instance == null) {
+            instance = new SessionManager();
+        }
+        return instance;
+    } ///   --수정
+
+    
+    // 중복 세션 검사 및 기존 세션 만료
+    private void invalidateExistingSession(String userId) {
+        sessions.values().removeIf(session -> session.getUserId().equals(userId));
+    }
+    
+    
     // 세션 생성
-    public Session createSession(String userId) {
-        String sessionId = generateSessionId();  // 세션 ID 생성
-        Session session = new Session(sessionId, userId);
+    public Session createSession(String userId, String nickname) {
+    	  invalidateExistingSession(userId);  // 중복 로그인 방지: 기존 세션 만료
+          String sessionId = generateSessionId();  // 새 세션 ID 생성
+        Session session = new Session(sessionId, userId, nickname);
         sessions.put(sessionId, session);  // 세션 저장
         return session;
     }

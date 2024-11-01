@@ -30,18 +30,23 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter("password");
 
         try {
-        	response.setContentType("text/plain; charset=UTF-8");
+        	response.setContentType("application/json; charset=UTF-8");
         	
             // 로그인 시도
             Session session = loginLogout.login(userId, password);
             if (session != null) {
-                response.getWriter().write("로그인에 성공하셨습니다! \n세션ID: " + session.getSessionId());
+            	response.getWriter().write("{\"message\": \"로그인에 성공하셨습니다!\", \"sessionId\": \"" + session.getSessionId() + "\"}");
             } else {
-                response.getWriter().write("로그인에 실패하셨습니다. 정보를 확인해주세요.");
+            	// 로그인 실패 시에도 JSON 형식으로 응답
+                response.getWriter().write("{\"message\": \"로그인에 실패하셨습니다. 정보를 확인해주세요.\"}");
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            response.getWriter().write("Error during login process.");
+         // 예외 발생 시에도 JSON 형식으로 응답
+            response.getWriter().write("{\"message\": \"Error during login process.\"}");
         }
+    }
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        
     }
 }

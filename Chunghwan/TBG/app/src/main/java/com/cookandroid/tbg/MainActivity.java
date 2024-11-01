@@ -1,99 +1,131 @@
 package com.cookandroid.tbg;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.viewpager2.widget.ViewPager2;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
+import com.google.android.material.button.MaterialButton;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private EditText userIdEditText, passwordEditText, PW,password_good, nicknameEditText;
-    private Button registerButton;
+
+    private OnboardingAdapter onboardingAdapter;
+    private LinearLayout layoutOnboardingIndicators;
+    private MaterialButton buttonOnboardingAction;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        userIdEditText = findViewById(R.id.userIdEditText);
-        passwordEditText = findViewById(R.id.passwordEditText);
-        PW = findViewById(R.id.PW);  //임의추가
-        TextView passwordGoodTextView = findViewById(R.id.password_good); //임의추가
-        nicknameEditText = findViewById(R.id.nicknameEditText);
-        registerButton = findViewById(R.id.registerButton);
 
-        registerButton.setOnClickListener(new View.OnClickListener() {
+        layoutOnboardingIndicators = findViewById(R.id.layoutOnboardingIndicators);
+        buttonOnboardingAction = findViewById(R.id.buttonOnboardingAction);
+
+        setupOnboardingItems();
+
+        ViewPager2 onboardingViewPager = findViewById(R.id.onboardingViewPager);
+        onboardingViewPager.setAdapter(onboardingAdapter);
+
+        setupOnboardingIndicators();
+        setCurrentOnboardingIndicator(0);
+
+        onboardingViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
-            public void onClick(View v) {
-                String userId = userIdEditText.getText().toString();
-                String password = passwordEditText.getText().toString();
-                String password_re = PW.getText().toString();  // 비밀번호 확인 필드 값 가져오기
-                String nickname = nicknameEditText.getText().toString();
-                if(password.equals(password_re)){
-                    passwordGoodTextView.setText("비밀번호가 같습니다");
-
-                }else {
-                    // 비밀번호가 일치하지 않으면 비워두거나 다른 메시지를 표시
-                    passwordGoodTextView.setText("비밀번호가 일치하지 않습니다.");
-                }
-                // 서버로 회원가입 요청 보내기
-                new Thread(() -> {
-                    String serverUrl = "http://10.0.2.2:8888/kch_server/register";  // 서버 URL
-
-                    try {
-                        URL url = new URL(serverUrl);
-                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                        conn.setRequestMethod("POST");
-                        conn.setDoOutput(true);
-
-                        // 서버로 보낼 파라미터 설정
-                        String postData = "userId=" + URLEncoder.encode(userId, StandardCharsets.UTF_8.toString()) +
-                                "&password=" + URLEncoder.encode(password, StandardCharsets.UTF_8.toString()) +
-                                "&password_re=" + URLEncoder.encode(password_re, StandardCharsets.UTF_8.toString()) +
-                                "&nickname=" + URLEncoder.encode(nickname, StandardCharsets.UTF_8.toString());
-
-                        OutputStream os = conn.getOutputStream();
-                        os.write(postData.getBytes());
-                        os.flush();
-                        os.close();
-
-                        // 서버 응답 받기
-                        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                        StringBuilder response = new StringBuilder();
-                        String inputLine;
-                        while ((inputLine = in.readLine()) != null) {
-                            response.append(inputLine);
-                        }
-                        in.close();
-
-                        // 서버 응답을 UI에 표시
-                        runOnUiThread(() -> Toast.makeText(MainActivity.this, response.toString(), Toast.LENGTH_LONG).show());
-                        if (response.toString().equals("회원가입에 성공 하셨습니다!")) {
-                            Intent intent = new Intent(MainActivity.this, LoginActivity.class); // 로그인으로 이동
-                            startActivity(intent);
-                            finish();  // 현재 액티비티를 종료해서 뒤로 가기 버튼 눌렀을 때 다시 이 화면이 나오지 않게 함
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        runOnUiThread(() -> Toast.makeText(MainActivity.this, "Error during registration.", Toast.LENGTH_LONG).show());
-                    }
-                }).start();
-
-
-
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                setCurrentOnboardingIndicator(position);
             }
         });
+
+        buttonOnboardingAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (onboardingViewPager.getCurrentItem() + 1 < onboardingAdapter.getItemCount()) {
+                    onboardingViewPager.setCurrentItem(onboardingViewPager.getCurrentItem() + 1); // 다음 페이지로 이동
+                } else {
+                    // 마지막 페이지에 도달한 경우
+                    startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                    finish(); // OnboardingActivity 종료
+                }
+            }
+        });
+    }
+
+    private void setupOnboardingItems(){
+
+        List<OnboardingItem> onboardingItems = new ArrayList<>();
+
+        OnboardingItem itemPayOnline = new OnboardingItem();
+        itemPayOnline.setTitle("여행지 추천!");
+        itemPayOnline.setDescription("가고 싶은 곳이 \n있으신가요?");
+        itemPayOnline.setImage(R.drawable.onboarding1);
+
+        OnboardingItem itemOnTheWay = new OnboardingItem();
+        itemOnTheWay.setTitle("교통수단 예약 가능!");
+        itemOnTheWay.setDescription("각종 교통수단과 \n함께 할 수 있어요");
+        itemOnTheWay.setImage(R.drawable.onboarding2);
+
+        OnboardingItem itemEatTogether = new OnboardingItem();
+        itemEatTogether.setTitle("손쉽게 시작하는 여행!");
+        itemEatTogether.setDescription("타볼까와\n여행을 시작해봐요!");
+        itemEatTogether.setImage(R.drawable.onboarding3);
+
+        onboardingItems.add(itemPayOnline);
+        onboardingItems.add(itemOnTheWay);
+        onboardingItems.add(itemEatTogether);
+
+        onboardingAdapter = new OnboardingAdapter(onboardingItems);
+
+
+    }
+    private void setupOnboardingIndicators() {
+        ImageView[] indicators = new ImageView[onboardingAdapter.getItemCount()];
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        layoutParams.setMargins(20, 0, 20, 0);
+        for (int i = 0; i< indicators.length; i++){
+            indicators[i] = new ImageView(getApplication());
+            indicators[i].setImageDrawable(ContextCompat.getDrawable(
+                    getApplicationContext(),
+                    R.drawable.onboarding_indicator_inactive
+            ));
+            indicators[i].setLayoutParams(layoutParams);
+            layoutOnboardingIndicators.addView(indicators[i]);
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void setCurrentOnboardingIndicator(int index){
+        int childCount = layoutOnboardingIndicators.getChildCount();
+        for(int i = 0; i < childCount; i++) {
+            ImageView imageView = (ImageView) layoutOnboardingIndicators.getChildAt(i);
+            if(i == index){
+                imageView.setImageDrawable(
+                        ContextCompat.getDrawable(getApplicationContext(), R.drawable.onboarding_indicator_active)
+                );
+            } else{
+                imageView.setImageDrawable(
+                        ContextCompat.getDrawable(getApplicationContext(), R.drawable.onboarding_indicator_inactive)
+                );
+            }
+        }
+        if(index == onboardingAdapter.getItemCount() - 1) {
+            buttonOnboardingAction.setText("시작하기");
+        } else {
+            buttonOnboardingAction.setText("다음");
+        }
     }
 }

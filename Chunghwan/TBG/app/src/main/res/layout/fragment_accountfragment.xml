@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/appbg">
+
+    <!-- 둥근 사각형 배경을 가진 ConstraintLayout -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/menuBackground"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/accountbackground"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.1"
+        app:layout_constraintWidth_percent="0.9"
+        app:layout_constraintHeight_percent="0.95">
+
+        <!-- 원형 프로필 이미지 뷰 -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/profileImageView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/default_profile_image"
+            android:contentDescription="프로필 사진"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:shapeAppearanceOverlay="@style/CircularImageView"
+            android:scaleType="centerCrop" />
+
+        <!-- 메뉴 목록 예시 -->
+        <TextView
+            android:id="@+id/menuTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="메뉴 목록"
+            android:textSize="24sp"
+            app:layout_constraintTop_toBottomOf="@id/profileImageView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="20dp"/>
+
+        <!-- 아이콘을 menuTitle 아래에 배치 -->
+        <ImageView
+            android:id="@+id/tbgIcon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/tbg_icon"
+            app:layout_constraintTop_toBottomOf="@id/menuTitle"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="10dp" />
+
+        <!-- 필요에 따라 더 많은 메뉴 아이템 추가 가능 -->
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

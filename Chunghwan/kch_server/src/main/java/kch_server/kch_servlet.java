@@ -45,6 +45,8 @@ public class kch_servlet extends HttpServlet {
         // 회원가입 시도
         if (registration.register(newUser)) {
             response.setContentType("text/plain; charset=UTF-8");
+            HttpSession session = request.getSession();		//테스트
+            session.setAttribute("id", newUser.getID());  //테스트
             response.getWriter().write("회원가입에 성공 하셨습니다!");
         } else {
             response.setContentType("text/plain; charset=UTF-8");
