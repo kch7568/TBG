@@ -18,16 +18,21 @@
 
         <activity android:name=".RegisterActivity" />
         <activity android:name=".ForgotPWActivity" />
-        <activity android:name=".TrainOnewayActivity" />
         <activity android:name=".AppMainActivity" />
 
         <activity android:name=".LoginActivity" />
-        <activity android:name=".HomeActivity" />
-
-
+        <activity android:name=".RailroadActivity2" />
+        <activity android:name=".Test" />
+        <activity android:name=".PWresetActivity"/>
+        <activity android:name=".SettingActivity"/>
+        <activity android:name=".SupportActivity"/>
+        <activity android:name=".FaqActivity"/>
+        <activity android:name=".HomeActivity"/>
+        <activity android:name=".WritingActivity"/>
+        <activity android:name=".InformationActivity"/>
         <!--액티비티 추가시 <application> 안에 추가해줘야함-->
         <activity
-            android:name="MainActivity"
+            android:name=".MainActivity"
 
             android:exported="true">
             <intent-filter>

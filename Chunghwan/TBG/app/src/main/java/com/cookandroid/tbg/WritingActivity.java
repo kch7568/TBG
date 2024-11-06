@@ -1,17 +1,23 @@
 package com.cookandroid.tbg;
 
 import android.os.Bundle;
+import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class TrainOnewayActivity extends AppCompatActivity {
+public class WritingActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // XML 레이아웃 파일을 이 액티비티에 연결
-        setContentView(R.layout.activity_train_oneway);
+        setContentView(R.layout.noticeboard_writing);
 
+        // 취소버튼 클릭 시 돌아가기
+        ImageButton cancelbtn = findViewById(R.id.Post_cancle);
+        cancelbtn.setOnClickListener(v -> {
+            finish();
+        });
 
 
 

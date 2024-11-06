@@ -13,6 +13,9 @@ import kch_java.SessionManager;
 public class GetProfileImageServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
+        response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, max-age=0");
+        response.setHeader("Pragma", "no-cache");
+
         PrintWriter out = response.getWriter();
 
         // 클라이언트가 보낸 sessionId 파라미터로 세션 조회

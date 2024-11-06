@@ -74,18 +74,43 @@ public class DAO_User extends BaseDAO {
 	
 	
 	public boolean addUser(User user) {
-		String sql = "INSERT INTO User (User_Id, Password, Nickname) VALUES (?, ?, ?)";
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, user.getID());
-            pstmt.setString(2, user.getPW());
-            pstmt.setString(3, user.getNickName());
-            int rowsInserted = pstmt.executeUpdate();
-            return rowsInserted > 0;  // 삽입 성공 여부 반환
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+	    String userSql = "INSERT INTO User (User_Id, Password, Nickname) VALUES (?, ?, ?)";
+	    String alertSql = "INSERT INTO Alert (User_Id, Alert_Status) VALUES (?, ?)";
+
+	    try {
+	        conn.setAutoCommit(false); // 트랜잭션 시작
+
+	        // User 테이블에 데이터 삽입
+	        try (PreparedStatement userPstmt = conn.prepareStatement(userSql)) {
+	            userPstmt.setString(1, user.getID());
+	            userPstmt.setString(2, user.getPW());
+	            userPstmt.setString(3, user.getNickName());
+	            int userRowsInserted = userPstmt.executeUpdate();
+
+	            if (userRowsInserted > 0) {
+	                // Alert 테이블에 데이터 삽입
+	                try (PreparedStatement alertPstmt = conn.prepareStatement(alertSql)) {
+	                    alertPstmt.setString(1, user.getID());
+	                    alertPstmt.setBoolean(2, true); // 기본 Alert_Status 값 설정 (기본값: true)
+	                    alertPstmt.executeUpdate();
+	                }
+	            }
+
+	            conn.commit(); // 트랜잭션 커밋
+	            return userRowsInserted > 0;
+	        } catch (SQLException e) {
+	            conn.rollback(); // 오류 시 롤백
+	            e.printStackTrace();
+	            return false;
+	        } finally {
+	            conn.setAutoCommit(true); // 자동 커밋 모드로 되돌림
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
 	}
+
 	
 	// 프로필 이미지 URL 업서트 메서드
 	public boolean upsertProfileImage(String userId, int postSize, String postExtension, String postUrl) {
@@ -142,7 +167,43 @@ public class DAO_User extends BaseDAO {
 	        return null;
 	    }
 	}
+	public boolean updateAlertStatus(String userId, boolean status) {
+	    String sql = "UPDATE Alert SET Alert_Status = ? WHERE User_Id = ?";
+	    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        pstmt.setBoolean(1, status);
+	        pstmt.setString(2, userId);
+	        int updatedRows = pstmt.executeUpdate();
+	        return updatedRows > 0; // 업데이트 성공 여부 반환
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
+	public Boolean getAlertStatus(String userId) {
+	    String sql = "SELECT Alert_Status FROM Alert WHERE User_Id = ?";
+	    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        pstmt.setString(1, userId);
+	        ResultSet rs = pstmt.executeQuery();
+	        if (rs.next()) {
+	            return rs.getBoolean("Alert_Status");
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return null; // 실패 시 null 반환
+	}
 
+	public boolean deleteUser(String userId) {
+	    String sql = "DELETE FROM User WHERE User_Id = ?";
+	    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        pstmt.setString(1, userId);
+	        int deletedRows = pstmt.executeUpdate();
+	        return deletedRows > 0; // 삭제 성공 여부 반환
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
 
 
 }

@@ -4,14 +4,19 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.os.Handler;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -22,6 +27,7 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -33,6 +39,7 @@ import java.util.concurrent.Executors;
 public class Accountfragment extends Fragment {
 
     private ImageView profileImageView;
+    private TextView accountNickname;
     private final Executor executor = Executors.newSingleThreadExecutor();
 
     private final ActivityResultLauncher<Intent> selectImageLauncher = registerForActivityResult(
@@ -55,7 +62,33 @@ public class Accountfragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_accountfragment, container, false);
 
         profileImageView = view.findViewById(R.id.profileImageView);
+        accountNickname = view.findViewById(R.id.accountNickname);
         profileImageView.setOnClickListener(v -> openGallery());
+////////////////////////////////////////////////////////////////////
+        // 닉네임 불러오기
+        loadNickname();
+/////////////////////////////////////////////////////////////////////
+        // LinearLayout 클릭 시 새로운 Activity로 이동하는 Intent 설정
+        LinearLayout pwResetLayout = view.findViewById(R.id.pwReset);
+        pwResetLayout.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), PWresetActivity.class);
+            startActivity(intent);
+        });
+
+        // LinearLayout 클릭 시 새로운 Activity로 이동하는 Intent 설정
+        LinearLayout settingLayout = view.findViewById(R.id.setting);
+        settingLayout.setOnClickListener(v -> {  // 여기를 settingLayout으로 수정
+            Intent intent = new Intent(getActivity(), SettingActivity.class);
+            startActivity(intent);
+        });
+
+        // LinearLayout 클릭 시 새로운 Activity로 이동하는 Intent 설정
+        LinearLayout suportLayout = view.findViewById(R.id.support);
+        suportLayout.setOnClickListener(v -> {  // 여기를 SupportActivity로 수정
+            Intent intent = new Intent(getActivity(), SupportActivity.class);
+            startActivity(intent);
+        });
+
 
         // 앱 시작 시 프로필 이미지 로드
         loadProfileImage();  // ★ 수정된 부분: 앱을 시작할 때 서버에서 프로필 이미지를 불러옵니다.
@@ -64,9 +97,65 @@ public class Accountfragment extends Fragment {
     }
 
     private void openGallery() {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT); // ACTION_PICK 대신 ACTION_GET_CONTENT로 시도
+        intent.setType("image/*");
         selectImageLauncher.launch(intent);
     }
+
+//닉네임 뿌려주기 ( HomeActivity 코드랑 똑같음)
+    private void loadNickname() {
+        SharedPreferences prefs = requireActivity().getSharedPreferences("AppPrefs", getContext().MODE_PRIVATE);
+        String sessionId = prefs.getString("sessionId", null);
+
+        if (sessionId != null) {
+            new Thread(() -> {
+                String serverUrl = "http://10.0.2.2:8888/kch_server/MainServlet";
+
+                try {
+                    URL url = new URL(serverUrl);
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("POST");
+                    conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+                    conn.setDoOutput(true);
+
+                    String postData = "sessionId=" + sessionId;
+                    OutputStream os = conn.getOutputStream();
+                    os.write(postData.getBytes("UTF-8"));
+                    os.flush();
+                    os.close();
+
+                    int responseCode = conn.getResponseCode();
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+                        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                        StringBuilder response = new StringBuilder();
+                        String inputLine;
+                        while ((inputLine = in.readLine()) != null) {
+                            response.append(inputLine);
+                        }
+                        in.close();
+
+                        JSONObject jsonResponse = new JSONObject(response.toString());
+                        if ("success".equals(jsonResponse.getString("status"))) {
+                            String nickname = jsonResponse.getString("nickname");
+                            Log.d("NicknameUpdate", "Setting nickname to: " + nickname);
+                            requireActivity().runOnUiThread(() -> accountNickname.setText( nickname + " 님"));
+                        } else {
+                            String message = jsonResponse.getString("message");
+                            requireActivity().runOnUiThread(() -> Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show());
+                        }
+                    } else {
+                        requireActivity().runOnUiThread(() -> Toast.makeText(getContext(), "Server error: " + responseCode, Toast.LENGTH_LONG).show());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    requireActivity().runOnUiThread(() -> Toast.makeText(getContext(), "Error during request.", Toast.LENGTH_LONG).show());
+                }
+            }).start();
+        } else {
+            Toast.makeText(getContext(), "Session ID not found. Please log in.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
     // 서버로 프로필 이미지를 업로드하는 메서드
     private void uploadImageToServer(Uri imageUri) {
@@ -75,6 +164,9 @@ public class Accountfragment extends Fragment {
             try {
                 InputStream imageStream = requireActivity().getContentResolver().openInputStream(imageUri);
                 Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+
+                // ★ 이미지 회전이 필요한 경우 회전된 이미지를 반환하는 메서드를 호출합니다.
+                selectedImage = rotateImageIfRequired(selectedImage, imageUri);
 
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                 selectedImage.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
@@ -123,11 +215,12 @@ public class Accountfragment extends Fragment {
                     requireActivity().runOnUiThread(() -> {
                         if (success) {
                             Toast.makeText(getContext(), "이미지가 서버에 성공적으로 업로드되었습니다.", Toast.LENGTH_SHORT).show();
-                            loadProfileImage(); // ★ 업로드 후 프로필 이미지를 다시 로드하여 최신 상태로 갱신
+                            new Handler().postDelayed(this::loadProfileImage, 10000); // 10초 지연 후 프로필 이미지 로드(db에서 동기화인데 어차피 보여주는건 똑같으니까 매우 빠르게 프사 바꾸는경우에 유리)
                         } else {
                             Toast.makeText(getContext(), "이미지 업로드에 실패했습니다.", Toast.LENGTH_SHORT).show();
                         }
                     });
+
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -136,9 +229,31 @@ public class Accountfragment extends Fragment {
         });
     }
 
+    // ★ 이미지 회전 보정을 위해 EXIF 정보를 확인하고 필요한 경우 이미지를 회전시키는 메서드.
+    private Bitmap rotateImageIfRequired(Bitmap img, Uri imageUri) throws IOException {
+        InputStream input = requireActivity().getContentResolver().openInputStream(imageUri);
+        ExifInterface ei = new ExifInterface(input);
 
+        int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
 
-    // 수정된 부분: 이미지를 불러오는 loadProfileImage 메서드에서 imageUrlWithTimestamp 설정 부분
+        switch (orientation) {
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                return rotateImage(img, 90);  // ★ 90도 회전 필요 시 회전.
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                return rotateImage(img, 180); // ★ 180도 회전 필요 시 회전.
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                return rotateImage(img, 270); // ★ 270도 회전 필요 시 회전.
+            default:
+                return img;  // ★ 회전 필요 없는 경우 원본 이미지 반환.
+        }
+    }
+
+    // ★ 실제 이미지 회전을 수행하는 메서드.
+    private Bitmap rotateImage(Bitmap img, int degree) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(degree);  // ★ 주어진 각도로 이미지를 회전합니다.
+        return Bitmap.createBitmap(img, 0, 0, img.getWidth(), img.getHeight(), matrix, true);
+    }
 
     private void loadProfileImage() {
         executor.execute(() -> {
@@ -147,7 +262,8 @@ public class Accountfragment extends Fragment {
                 String sessionId = prefs.getString("sessionId", null);
                 if (sessionId == null) return;
 
-                String serverUrl = "http://10.0.2.2:8888/kch_server/GetProfileImage?sessionId=" + sessionId;
+                // 타임스탬프 추가하여 URL 생성
+                String serverUrl = "http://10.0.2.2:8888/kch_server/GetProfileImage?sessionId=" + sessionId + "&timestamp=" + System.currentTimeMillis();
                 URL url = new URL(serverUrl);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestMethod("GET");
@@ -164,10 +280,9 @@ public class Accountfragment extends Fragment {
                     reader.close();
 
                     JSONObject jsonResponse = new JSONObject(response.toString());
-                    System.out.println("Response from server: " + jsonResponse.toString());  // 디버그 로그 추가
                     if ("success".equals(jsonResponse.getString("status"))) {
-                        String imageUrl = jsonResponse.getString("imageUrl").replace("localhost", "10.0.2.2"); // ★ localhost를 10.0.2.2로 변경
-                        String imageUrlWithTimestamp = imageUrl + "?timestamp=" + System.currentTimeMillis();
+                        String imageUrl = jsonResponse.getString("imageUrl").replace("localhost", "10.0.2.2");
+                        String imageUrlWithTimestamp = imageUrl + "?timestamp=" + System.currentTimeMillis(); // 타임스탬프 추가
                         System.out.println("Image URL received: " + imageUrlWithTimestamp);  // 디버그 로그 추가
                         requireActivity().runOnUiThread(() -> loadImageFromUrl(imageUrlWithTimestamp));
                     }
@@ -179,18 +294,23 @@ public class Accountfragment extends Fragment {
     }
 
 
-
-    // ★ 추가된 메서드: URL에서 이미지를 로드하여 ImageView에 설정하는 메서드
     private void loadImageFromUrl(String imageUrl) {
         executor.execute(() -> {
             try {
                 System.out.println("Loading image from URL: " + imageUrl);  // 디버그 로그 추가
                 InputStream input = new java.net.URL(imageUrl).openStream();
                 Bitmap bitmap = BitmapFactory.decodeStream(input);
-                requireActivity().runOnUiThread(() -> profileImageView.setImageBitmap(bitmap));
+                requireActivity().runOnUiThread(() -> {
+                    profileImageView.setImageBitmap(null); // 이전 이미지 지우기
+                    profileImageView.setImageBitmap(bitmap); // 새 이미지 설정
+                });
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
     }
+
+
+
+
 }

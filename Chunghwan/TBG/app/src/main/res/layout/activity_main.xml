@@ -12,6 +12,7 @@
     <!-- Onboarding 버튼 -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonOnboardingAction"
+        android:backgroundTint="@color/colorPrimary"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
