@@ -1,6 +1,9 @@
 package com.example.tbg;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,8 +11,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.Objects;
 
 
 public class HomeFragment extends Fragment {
@@ -63,10 +69,18 @@ public class HomeFragment extends Fragment {
         TextView dialogMessage = dialogView.findViewById(R.id.dialogMessage);
         dialogMessage.setText(message);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setView(dialogView)
-                .setPositiveButton("확인", (dialog, which) -> dialog.dismiss())
+        AlertDialog dialog = new AlertDialog.Builder(getActivity())
+                .setView(dialogView)
                 .setCancelable(true)
-                .show();
+                .create();
+
+        Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); //alertdialog 모서리 투명하게 해주는 코드
+
+        TextView closeButton = dialogView.findViewById(R.id.closeButton);
+        closeButton.setOnClickListener(v -> dialog.dismiss());
+
+        dialog.show();
     }
+
 }
