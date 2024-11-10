@@ -1,6 +1,11 @@
 package kch_DAO;
 
+import java.io.File;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import kch_java.PostItem;
 import kch_java.User;
 
 public class DAO_User extends BaseDAO {
@@ -204,13 +209,217 @@ public class DAO_User extends BaseDAO {
 	        return false;
 	    }
 	}
+	
+	// 게시물 저장 메서드
+    public int savePost(String userId, String title, String content, String categoryCode) {
+        String postSql = "INSERT INTO Post (User_Id, Post_Title, Post_Content, Category_Code, Post_createDay) VALUES (?, ?, ?, ?, NOW())";
+        try (PreparedStatement postPstmt = conn.prepareStatement(postSql, Statement.RETURN_GENERATED_KEYS)) {
+            postPstmt.setString(1, userId);
+            postPstmt.setString(2, title);
+            postPstmt.setString(3, content);
+            postPstmt.setString(4, categoryCode);
 
+            int affectedRows = postPstmt.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Post creation failed, no rows affected.");
+            }
+
+            // 생성된 게시물 번호 가져오기
+            try (ResultSet generatedKeys = postPstmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    return generatedKeys.getInt(1);
+                } else {
+                    throw new SQLException("Post creation failed, no ID obtained.");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
+ // 파일 정보 저장 메서드
+    public boolean saveFile(int postNum, String filePath, String fileName, String fileExtension, String fileCapacity) {
+        String fileSql = "INSERT INTO File (Post_Num, File_Path, File_name, File_extension, File_capacity) VALUES (?, ?, ?, ?, ?)";
+        try (PreparedStatement filePstmt = conn.prepareStatement(fileSql)) {
+            filePstmt.setInt(1, postNum);
+            filePstmt.setString(2, filePath);
+            filePstmt.setString(3, fileName);
+            filePstmt.setString(4, fileExtension);
+            filePstmt.setString(5, fileCapacity);
+
+            int fileInsertedRows = filePstmt.executeUpdate();
+            return fileInsertedRows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+	/**
+	 * MIME 타입에 따라 파일 확장자를 결정하는 메소드
+	 */
+	private String determineFileExtension(String mimeType) {
+	    switch (mimeType) {
+	        case "image/jpeg":
+	            return "jpg";
+	        case "image/png":
+	            return "png";
+	        case "image/gif":
+	            return "gif";
+	        case "video/mp4":
+	            return "mp4";
+	        case "video/avi":
+	            return "avi";
+	        case "video/mkv":
+	            return "mkv";
+	        default:
+	            return null; // 지원되지 않는 파일 유형
+	    }
+	}
+	
+	
+
+	public List<PostItem> getAllPosts() {
+	    List<PostItem> postList = new ArrayList<>();
+	    String sql = "SELECT p.Post_Num, p.Post_Title, u.Nickname AS nickname, p.Post_createDay, f.File_Path, " +
+	                 "mp.My_postURL AS profileImageUrl, p.Post_hits, p.Post_Heart, p.Post_Content " +
+	                 "FROM Post p " +
+	                 "LEFT JOIN File f ON p.Post_Num = f.Post_Num " +
+	                 "LEFT JOIN User u ON p.User_Id = u.User_Id " +
+	                 "LEFT JOIN MyProfile mp ON u.User_Id = mp.User_Id";
+
+	    try (PreparedStatement pstmt = conn.prepareStatement(sql);
+	         ResultSet rs = pstmt.executeQuery()) {
+
+	        while (rs.next()) {
+	            int postId = rs.getInt("Post_Num");
+	            String title = rs.getString("Post_Title");
+	            String nickname = rs.getString("nickname"); // 닉네임 추가
+	            String createDate = rs.getString("Post_createDay");
+	            String postImageUrl = rs.getString("File_Path");
+	            String profileImageUrl = rs.getString("profileImageUrl");
+	            int views = rs.getInt("Post_hits");
+	            int likes = rs.getInt("Post_Heart");
+	            String content = rs.getString("Post_Content");
+
+	            PostItem post = new PostItem(postId, title, nickname, createDate, content, postImageUrl, profileImageUrl, views, likes, nickname);
+	            postList.add(post);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return postList;
+	}
+
+	
+	
+	public List<PostItem> getAllPostsSortedByDate() {
+	    List<PostItem> postList = new ArrayList<>();
+	    String sql = "SELECT p.Post_Num, p.Post_Title, u.Nickname AS nickname, p.Post_createDay, f.File_Path, " +
+	                 "mp.My_postURL AS profileImageUrl, p.Post_hits AS views, p.Post_Heart AS likes, p.Post_Content " +
+	                 "FROM Post p " +
+	                 "LEFT JOIN File f ON p.Post_Num = f.Post_Num " +
+	                 "LEFT JOIN User u ON p.User_Id = u.User_Id " +
+	                 "LEFT JOIN MyProfile mp ON u.User_Id = mp.User_Id " +
+	                 "ORDER BY p.Post_createDay DESC";
+
+	    try (PreparedStatement pstmt = conn.prepareStatement(sql);
+	         ResultSet rs = pstmt.executeQuery()) {
+
+	        while (rs.next()) {
+	            int postId = rs.getInt("Post_Num");
+	            String title = rs.getString("Post_Title");
+	            String nickname = rs.getString("nickname");
+	            String createDate = rs.getString("Post_createDay");
+	            String postImageUrl = rs.getString("File_Path");
+	            String profileImageUrl = rs.getString("profileImageUrl");
+	            int views = rs.getInt("views");
+	            int likes = rs.getInt("likes");
+	            String content = rs.getString("Post_Content");
+
+	            PostItem post = new PostItem(postId, title, nickname, createDate, content, postImageUrl, profileImageUrl, views, likes, nickname);
+	            postList.add(post);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return postList;
+	}
+
+	
+
+	public PostItem getPostDetails(String postId) {
+	    String sql = "SELECT p.Post_Num, p.Post_Title, u.Nickname AS nickname, p.Post_Content, p.Post_createDay, " +
+	                 "f.File_Path AS attachmentUrl, mp.My_postURL AS profileImageUrl, " +
+	                 "p.Post_hits, p.Post_Heart " +
+	                 "FROM Post p " +
+	                 "LEFT JOIN File f ON p.Post_Num = f.Post_Num " +
+	                 "LEFT JOIN User u ON p.User_Id = u.User_Id " +
+	                 "LEFT JOIN MyProfile mp ON u.User_Id = mp.User_Id " +
+	                 "WHERE p.Post_Num = ?";
+
+	    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        pstmt.setString(1, postId);
+	        ResultSet rs = pstmt.executeQuery();
+
+	        if (rs.next()) {
+	            int postIdInt = rs.getInt("Post_Num");
+	            String title = rs.getString("Post_Title");
+	            String nickname = rs.getString("nickname"); // 닉네임 추가
+	            String content = rs.getString("Post_Content");
+	            String createDate = rs.getString("Post_createDay");
+	            String attachmentUrl = rs.getString("attachmentUrl");
+	            String profileImageUrl = rs.getString("profileImageUrl");
+	            int views = rs.getInt("Post_hits");
+	            int likes = rs.getInt("Post_Heart");
+
+	            return new PostItem(postIdInt, title, nickname, createDate, content, attachmentUrl, profileImageUrl, views, likes, nickname);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return null;
+	}
+	
+	public List<PostItem> getPostsByCategory(String categoryCode) {
+	    List<PostItem> postList = new ArrayList<>();
+	    String sql = "SELECT p.Post_Num, p.Post_Title, u.Nickname AS nickname, p.Post_createDay, f.File_Path AS postImageUrl, " +
+	                 "mp.My_postURL AS profileImageUrl, p.Post_hits, p.Post_Heart, p.Post_Content " +
+	                 "FROM Post p " +
+	                 "LEFT JOIN File f ON p.Post_Num = f.Post_Num " +
+	                 "LEFT JOIN User u ON p.User_Id = u.User_Id " +
+	                 "LEFT JOIN MyProfile mp ON u.User_Id = mp.User_Id " +
+	                 "WHERE p.Category_Code = ? " +
+	                 "ORDER BY p.Post_createDay DESC";
+
+	    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        pstmt.setString(1, categoryCode);
+	        ResultSet rs = pstmt.executeQuery();
+
+	        while (rs.next()) {
+	            int postId = rs.getInt("Post_Num");
+	            String title = rs.getString("Post_Title");
+	            String nickname = rs.getString("nickname");
+	            String createDate = rs.getString("Post_createDay");
+	            String postImageUrl = rs.getString("postImageUrl");
+	            String profileImageUrl = rs.getString("profileImageUrl");
+	            int views = rs.getInt("Post_hits");
+	            int likes = rs.getInt("Post_Heart");
+	            String content = rs.getString("Post_Content");
+
+	            PostItem post = new PostItem(postId, title, nickname, createDate, content, postImageUrl, profileImageUrl, views, likes, nickname);
+	            postList.add(post);
+	        }
+
+	        System.out.println("getPostsByCategory found: " + postList.size() + " posts for categoryCode: " + categoryCode);
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return postList;
+	}
 
 }
-
-
-
-
-
-
-
