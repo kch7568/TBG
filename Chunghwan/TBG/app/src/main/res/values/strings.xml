@@ -9,7 +9,7 @@
     <string name="yangyang_introduce">SNS핫플 양양</string>
     <string name="notice_board">게시판</string>
     <string name="uploadButton_description">등록 버튼을 누르면\n게시글이 다른 사용자에게 노출됩니다!</string>
-
+    <string name="text1">다른 교통수단을 원하시면</string>
     <!-- FAQ 텍스트 -->
     <string name="faq_text">
         <![CDATA[

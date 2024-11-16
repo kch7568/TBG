@@ -2,9 +2,13 @@ package kch_DAO;
 
 import java.io.File;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import kch_java.Comment;
 import kch_java.PostItem;
 import kch_java.User;
 
@@ -14,6 +18,10 @@ public class DAO_User extends BaseDAO {
 	public DAO_User() throws SQLException, ClassNotFoundException {
         super();
     }
+	
+	// 사용자와 게시물별 좋아요 기록을 저장할 맵 (static으로 변경하여 모든 인스턴스가 공유)
+	private static Map<String, LocalDate> likeRecords = new HashMap<>();
+    private Map<String, LocalDate> viewRecords = new HashMap<>();
 	
     // 비밀번호 업데이트 메서드
 	public boolean updatePassword(User user) {
@@ -281,7 +289,7 @@ public class DAO_User extends BaseDAO {
 
 	public List<PostItem> getAllPosts() {
 	    List<PostItem> postList = new ArrayList<>();
-	    String sql = "SELECT p.Post_Num, p.Post_Title, u.Nickname AS nickname, p.Post_createDay, f.File_Path, " +
+	    String sql = "SELECT p.Post_Num, p.Post_Title, u.Nickname AS nickname, p.Post_createDay, f.File_Path, f.File_extension, " +
 	                 "mp.My_postURL AS profileImageUrl, p.Post_hits, p.Post_Heart, p.Post_Content " +
 	                 "FROM Post p " +
 	                 "LEFT JOIN File f ON p.Post_Num = f.Post_Num " +
@@ -294,15 +302,27 @@ public class DAO_User extends BaseDAO {
 	        while (rs.next()) {
 	            int postId = rs.getInt("Post_Num");
 	            String title = rs.getString("Post_Title");
-	            String nickname = rs.getString("nickname"); // 닉네임 추가
+	            String nickname = rs.getString("nickname");
 	            String createDate = rs.getString("Post_createDay");
-	            String postImageUrl = rs.getString("File_Path");
+	            String filePath = rs.getString("File_Path");
+	            String fileExtension = rs.getString("File_extension");
 	            String profileImageUrl = rs.getString("profileImageUrl");
 	            int views = rs.getInt("Post_hits");
 	            int likes = rs.getInt("Post_Heart");
 	            String content = rs.getString("Post_Content");
 
-	            PostItem post = new PostItem(postId, title, nickname, createDate, content, postImageUrl, profileImageUrl, views, likes, nickname);
+	            // 파일 확장자에 따라 이미지 또는 동영상 URL 설정
+	            String postImageUrl = null;
+	            String postVideoUrl = null;
+	            if (fileExtension != null) {
+	                if (fileExtension.equalsIgnoreCase("jpg") || fileExtension.equalsIgnoreCase("png")) {
+	                    postImageUrl = filePath;
+	                } else if (fileExtension.equalsIgnoreCase("mp4") || fileExtension.equalsIgnoreCase("avi")) {
+	                    postVideoUrl = filePath;
+	                }
+	            }
+
+	            PostItem post = new PostItem(postId, title, nickname, createDate, content, postImageUrl, postVideoUrl, profileImageUrl, views, likes, nickname);
 	            postList.add(post);
 	        }
 	    } catch (SQLException e) {
@@ -312,11 +332,12 @@ public class DAO_User extends BaseDAO {
 	    return postList;
 	}
 
+
 	
 	
 	public List<PostItem> getAllPostsSortedByDate() {
 	    List<PostItem> postList = new ArrayList<>();
-	    String sql = "SELECT p.Post_Num, p.Post_Title, u.Nickname AS nickname, p.Post_createDay, f.File_Path, " +
+	    String sql = "SELECT p.Post_Num, p.Post_Title, u.Nickname AS nickname, p.Post_createDay, f.File_Path AS filePath, f.File_extension, " +
 	                 "mp.My_postURL AS profileImageUrl, p.Post_hits AS views, p.Post_Heart AS likes, p.Post_Content " +
 	                 "FROM Post p " +
 	                 "LEFT JOIN File f ON p.Post_Num = f.Post_Num " +
@@ -332,13 +353,25 @@ public class DAO_User extends BaseDAO {
 	            String title = rs.getString("Post_Title");
 	            String nickname = rs.getString("nickname");
 	            String createDate = rs.getString("Post_createDay");
-	            String postImageUrl = rs.getString("File_Path");
+	            String filePath = rs.getString("filePath");
+	            String fileExtension = rs.getString("File_extension");
 	            String profileImageUrl = rs.getString("profileImageUrl");
 	            int views = rs.getInt("views");
 	            int likes = rs.getInt("likes");
 	            String content = rs.getString("Post_Content");
 
-	            PostItem post = new PostItem(postId, title, nickname, createDate, content, postImageUrl, profileImageUrl, views, likes, nickname);
+	            // 파일 확장자에 따라 이미지 또는 동영상 URL 설정
+	            String postImageUrl = null;
+	            String postVideoUrl = null;
+	            if (fileExtension != null) {
+	                if (fileExtension.equalsIgnoreCase("jpg") || fileExtension.equalsIgnoreCase("png")) {
+	                    postImageUrl = filePath;
+	                } else if (fileExtension.equalsIgnoreCase("mp4") || fileExtension.equalsIgnoreCase("avi")) {
+	                    postVideoUrl = filePath;
+	                }
+	            }
+
+	            PostItem post = new PostItem(postId, title, nickname, createDate, content, postImageUrl, postVideoUrl, profileImageUrl, views, likes, nickname);
 	            postList.add(post);
 	        }
 	    } catch (SQLException e) {
@@ -347,12 +380,11 @@ public class DAO_User extends BaseDAO {
 
 	    return postList;
 	}
-
 	
 
 	public PostItem getPostDetails(String postId) {
 	    String sql = "SELECT p.Post_Num, p.Post_Title, u.Nickname AS nickname, p.Post_Content, p.Post_createDay, " +
-	                 "f.File_Path AS attachmentUrl, mp.My_postURL AS profileImageUrl, " +
+	                 "f.File_Path AS attachmentUrl, f.File_extension, mp.My_postURL AS profileImageUrl, " +
 	                 "p.Post_hits, p.Post_Heart " +
 	                 "FROM Post p " +
 	                 "LEFT JOIN File f ON p.Post_Num = f.Post_Num " +
@@ -367,25 +399,38 @@ public class DAO_User extends BaseDAO {
 	        if (rs.next()) {
 	            int postIdInt = rs.getInt("Post_Num");
 	            String title = rs.getString("Post_Title");
-	            String nickname = rs.getString("nickname"); // 닉네임 추가
+	            String nickname = rs.getString("nickname");
 	            String content = rs.getString("Post_Content");
 	            String createDate = rs.getString("Post_createDay");
 	            String attachmentUrl = rs.getString("attachmentUrl");
+	            String fileExtension = rs.getString("File_extension");
 	            String profileImageUrl = rs.getString("profileImageUrl");
 	            int views = rs.getInt("Post_hits");
 	            int likes = rs.getInt("Post_Heart");
 
-	            return new PostItem(postIdInt, title, nickname, createDate, content, attachmentUrl, profileImageUrl, views, likes, nickname);
+	            // 파일 확장자에 따라 이미지 또는 동영상 URL 설정
+	            String postImageUrl = null;
+	            String postVideoUrl = null;
+	            if (fileExtension != null) {
+	                if (fileExtension.equalsIgnoreCase("jpg") || fileExtension.equalsIgnoreCase("png")) {
+	                    postImageUrl = attachmentUrl;
+	                } else if (fileExtension.equalsIgnoreCase("mp4") || fileExtension.equalsIgnoreCase("avi")) {
+	                    postVideoUrl = attachmentUrl;
+	                }
+	            }
+
+	            return new PostItem(postIdInt, title, nickname, createDate, content, postImageUrl, postVideoUrl, profileImageUrl, views, likes, nickname);
 	        }
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
 	    return null;
 	}
+
 	
 	public List<PostItem> getPostsByCategory(String categoryCode) {
 	    List<PostItem> postList = new ArrayList<>();
-	    String sql = "SELECT p.Post_Num, p.Post_Title, u.Nickname AS nickname, p.Post_createDay, f.File_Path AS postImageUrl, " +
+	    String sql = "SELECT p.Post_Num, p.Post_Title, u.Nickname AS nickname, p.Post_createDay, f.File_Path AS filePath, f.File_extension, " +
 	                 "mp.My_postURL AS profileImageUrl, p.Post_hits, p.Post_Heart, p.Post_Content " +
 	                 "FROM Post p " +
 	                 "LEFT JOIN File f ON p.Post_Num = f.Post_Num " +
@@ -403,13 +448,25 @@ public class DAO_User extends BaseDAO {
 	            String title = rs.getString("Post_Title");
 	            String nickname = rs.getString("nickname");
 	            String createDate = rs.getString("Post_createDay");
-	            String postImageUrl = rs.getString("postImageUrl");
+	            String filePath = rs.getString("filePath");
+	            String fileExtension = rs.getString("File_extension");
 	            String profileImageUrl = rs.getString("profileImageUrl");
 	            int views = rs.getInt("Post_hits");
 	            int likes = rs.getInt("Post_Heart");
 	            String content = rs.getString("Post_Content");
 
-	            PostItem post = new PostItem(postId, title, nickname, createDate, content, postImageUrl, profileImageUrl, views, likes, nickname);
+	            // 파일 확장자에 따라 이미지 또는 동영상 URL 설정
+	            String postImageUrl = null;
+	            String postVideoUrl = null;
+	            if (fileExtension != null) {
+	                if (fileExtension.equalsIgnoreCase("jpg") || fileExtension.equalsIgnoreCase("png")) {
+	                    postImageUrl = filePath;
+	                } else if (fileExtension.equalsIgnoreCase("mp4") || fileExtension.equalsIgnoreCase("avi")) {
+	                    postVideoUrl = filePath;
+	                }
+	            }
+
+	            PostItem post = new PostItem(postId, title, nickname, createDate, content, postImageUrl, postVideoUrl, profileImageUrl, views, likes, nickname);
 	            postList.add(post);
 	        }
 
@@ -421,5 +478,110 @@ public class DAO_User extends BaseDAO {
 
 	    return postList;
 	}
+	
+	public List<Comment> getCommentsByPostId(String postId) {
+	    List<Comment> commentList = new ArrayList<>();
+	    String sql = "SELECT c.Comment_Contents, c.Comment_Date, u.Nickname, mp.My_postURL AS profileImageUrl " +
+	                 "FROM Comment c " +
+	                 "JOIN User u ON c.User_Id = u.User_Id " +
+	                 "LEFT JOIN MyProfile mp ON u.User_Id = mp.User_Id " +
+	                 "WHERE c.Post_Num = ? " +
+	                 "ORDER BY c.Comment_Date ASC";  // Comment_Date를 기준으로 오름차순 정렬
 
+	    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        pstmt.setString(1, postId);
+	        ResultSet rs = pstmt.executeQuery();
+	        while (rs.next()) {
+	            String author = rs.getString("Nickname");
+	            String content = rs.getString("Comment_Contents");
+	            String date = rs.getString("Comment_Date");
+	            String profileImageUrl = rs.getString("profileImageUrl");
+
+	            commentList.add(new Comment(author, content, date, profileImageUrl));
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return commentList;
+	}
+
+
+
+	
+	public boolean saveComment(String postId, String userId, String content) {
+	    String sql = "INSERT INTO Comment (Comment_Date, Comment_Contents, Post_Num, User_Id) VALUES (NOW(), ?, ?, ?)";
+	    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        pstmt.setString(1, content);
+	        pstmt.setString(2, postId);
+	        pstmt.setString(3, userId);
+	        
+	        int insertedRows = pstmt.executeUpdate();
+	        return insertedRows > 0; // 성공적으로 저장되면 true 반환
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	        return false; // 저장 실패 시 false 반환
+	    }
+	}
+
+
+
+
+	
+	
+	 // 하루에 한 번만 좋아요 가능
+    public boolean incrementLikeCount(int postNum, String userId) {
+        if (!canUserLikeToday(userId, postNum)) {
+            return false; // 이미 오늘 좋아요를 눌렀다면 증가하지 않음
+        }
+
+        String likeSql = "UPDATE Post SET Post_Heart = Post_Heart + 1 WHERE Post_Num = ?";
+        try (PreparedStatement likeStmt = conn.prepareStatement(likeSql)) {
+            likeStmt.setInt(1, postNum);
+            if (likeStmt.executeUpdate() > 0) {
+                recordLike(userId, postNum); // 사용자가 오늘 좋아요를 누른 기록을 갱신
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+	
+
+    // 하루에 한 번 조회수 증가 메서드
+    public boolean incrementViewCount(int postNum) {
+        String sql = "UPDATE Post SET Post_hits = Post_hits + 1 WHERE Post_Num = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, postNum);
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+
+
+    public boolean canUserLikeToday(String userId, int postNum) {
+        String key = userId + "_" + postNum;
+        LocalDate lastLikedDate = likeRecords.get(key);
+        LocalDate today = LocalDate.now();
+
+        // 오늘 이미 좋아요를 눌렀다면 false 반환
+        if (today.equals(lastLikedDate)) {
+            System.out.println("오늘 이미 좋아요를 눌렀습니다. key: " + key);
+            return false;
+        }
+        System.out.println("좋아요 가능. key: " + key);
+        return true;
+    }
+    
+    public void recordLike(String userId, int postNum) {
+        String key = userId + "_" + postNum;
+        likeRecords.put(key, LocalDate.now());
+        System.out.println("좋아요 기록 업데이트 완료: " + key);
+    }
+	
 }

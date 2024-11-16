@@ -62,8 +62,38 @@ public class AssignmentFragment extends Fragment {
         postsRecyclerView = view.findViewById(R.id.postsRecyclerView);
         postsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Set up the adapter
+        // Set up the adapter and handle item clicks
         postsAdapter = new PostsAdapter(getContext(), postItemList);
+        postsAdapter.setOnItemClickListener(post -> {
+            // Create an Intent to navigate to the PostDetailActivity
+            Intent intent = new Intent(getActivity(), PostDetailActivity.class);
+
+            // Add debug logs to check data being passed to PostDetailActivity
+            Log.d("AssignmentFragment", "Post Num: " + post.getPostNum());
+            Log.d("AssignmentFragment", "Title: " + post.getTitle());
+            Log.d("AssignmentFragment", "Author: " + post.getNickname());
+            Log.d("AssignmentFragment", "Date: " + post.getDate());
+            Log.d("AssignmentFragment", "Content: " + post.getContent());
+            Log.d("AssignmentFragment", "Post Image URL: " + post.getPostImageUrl());
+            Log.d("AssignmentFragment", "Profile Image URL: " + post.getProfileImageUrl());
+            Log.d("AssignmentFragment", "Views: " + post.getViews());
+            Log.d("AssignmentFragment", "Likes: " + post.getLikes());
+
+            intent.putExtra("postNum", String.valueOf(post.getPostNum()));
+
+            intent.putExtra("title", post.getTitle());
+            intent.putExtra("author", post.getNickname()); // 작성자 이름 전달
+            intent.putExtra("date", post.getDate());
+            intent.putExtra("content", post.getContent()); // 본문 내용 전달
+            intent.putExtra("postImageUrl", post.getPostImageUrl()); // 게시글 이미지 URL 전달
+            intent.putExtra("profileImageUrl", post.getProfileImageUrl()); // 프로필 이미지 URL 전달
+                intent.putExtra("postVideoUrl", post.getVideoUrl());
+            intent.putExtra("views", post.getViews());
+            intent.putExtra("likes", post.getLikes());
+            startActivity(intent);
+        });
+
+
         postsRecyclerView.setAdapter(postsAdapter);
 
         // Initialize the RadioGroup for category selection
@@ -141,23 +171,30 @@ public class AssignmentFragment extends Fragment {
 
                     for (int i = 0; i < postArray.length(); i++) {
                         JSONObject postObject = postArray.getJSONObject(i);
+                        // JSON 파싱 후 PostItem 객체 생성
+                        int postNum = postObject.getInt("postNum");
                         String title = postObject.getString("title");
-                        String nickname = postObject.getString("nickname"); // 닉네임 사용
+                        String nickname = postObject.getString("nickname");
                         String date = postObject.getString("date");
-                        String postImageUrl = postObject.optString("postImageUrl", ""); // 첨부 이미지 없는 경우를 대비하여 기본값 처리
-                        String profileImageUrl = postObject.optString("profileImageUrl", ""); // 프로필 이미지 없는 경우를 대비하여 기본값 처리
+                        String content = postObject.optString("content", "내용 없음");
+                        String postImageUrl = postObject.optString("postImageUrl", "");
+                        String profileImageUrl = postObject.optString("profileImageUrl", "");
+                        String videoUrl = postObject.optString("postVideoUrl", ""); // 추가된 videoUrl
                         int views = postObject.getInt("views");
                         int likes = postObject.getInt("likes");
 
-                        PostItem post = new PostItem(title, nickname, date, profileImageUrl, postImageUrl, views, likes);
+                        PostItem post = new PostItem(postNum, title, nickname, date, content, postImageUrl, profileImageUrl, videoUrl, views, likes);
                         postItemList.add(post);
+
                         Log.d(TAG, "Post added: " + post.getTitle());
                     }
+
 
                     Log.d(TAG, "Total posts added: " + postItemList.size());
 
                     // Update the UI on the main thread
                     getActivity().runOnUiThread(() -> {
+                        Log.d("AssignmentFragment", "postItemList size: " + postItemList.size());
                         postsAdapter.notifyDataSetChanged();
                         postsRecyclerView.scrollToPosition(0); // Ensure scrolling starts from the top
                         swipeRefreshLayout.setRefreshing(false); // Stop the refresh animation

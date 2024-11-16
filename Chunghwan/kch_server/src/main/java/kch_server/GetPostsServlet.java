@@ -39,17 +39,25 @@ public class GetPostsServlet extends HttpServlet {
             JSONArray postArray = new JSONArray();
             for (PostItem post : postList) {
                 JSONObject postObject = new JSONObject();
-                postObject.put("postId", post.getPostId());
+                postObject.put("postNum", post.getPostNum());
                 postObject.put("title", post.getTitle());
                 postObject.put("nickname", post.getNickname());
                 postObject.put("date", post.getCreateDate());
                 postObject.put("profileImageUrl", post.getProfileImageUrl() != null ? post.getProfileImageUrl() : "http://localhost:8888/kch_server/images/default_profile.jpg");
+                
+                // content 필드를 추가하여 게시물 내용 포함
+                postObject.put("content", post.getContent() != null ? post.getContent() : "내용 없음");
+
+                // postImageUrl과 postVideoUrl을 각각 구분하여 JSON에 추가
                 postObject.put("postImageUrl", post.getPostImageUrl() != null ? post.getPostImageUrl() : "");
+                postObject.put("postVideoUrl", post.getPostVideoUrl() != null ? post.getPostVideoUrl() : "");
+                
                 postObject.put("views", post.getViews());
                 postObject.put("likes", post.getLikes());
 
                 postArray.put(postObject);
             }
+
 
             out.print(postArray.toString());
             out.flush();

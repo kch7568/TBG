@@ -5,14 +5,12 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".RailroadActivity2">
+    tools:context=".AirportOnewayActivity">
 
     <LinearLayout
-        android:id="@+id/railroad1"
+        android:id="@+id/airport_oneway_1"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toEndOf="parent"
@@ -21,12 +19,12 @@
         <Button
             android:layout_width="40dp"
             android:layout_height="30dp"
-            android:layout_marginRight="30dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="8dp"
             android:background="@drawable/back_key" />
 
         <android.widget.Button
-            android:id="@+id/btn1"
+            android:id="@+id/airport_go_betweenBtn"
             android:layout_width="wrap_content"
             android:layout_height="35dp"
             android:layout_marginStart="20dp"
@@ -40,7 +38,7 @@
             android:layout_height="35dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="8dp"
-            android:background="@drawable/train_icon" />
+            android:background="@drawable/airport_icon2" />
 
         <android.widget.Button
             android:layout_width="wrap_content"
@@ -53,162 +51,208 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/railroad2"
+        android:id="@+id/airport_oneway_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
+        android:layout_marginStart="40dp"
         app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/railroad1">
+        app:layout_constraintTop_toBottomOf="@+id/airport_oneway_1">
 
-        <TextView
-            android:layout_width="300dp"
+        <EditText
+            android:layout_width="330dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-
+            android:layout_gravity="center|top"
+            android:layout_marginTop="8dp"
             android:background="@drawable/layout_background_train4"
             android:padding="7dp"
-            android:text="  출발지를 입력해주세요."
-            android:textSize="7pt"
-            android:textStyle="bold" />
+            android:hint="  출발지를 입력해주세요."
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="7pt" />
 
-        <TextView
-            android:layout_width="300dp"
+        <Button
+            android:id="@+id/airport_oneway_startDay"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="-45dp"
+            android:layout_marginTop="13dp"
+            android:background="@drawable/calendar" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/airport_oneway_3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginStart="40dp"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/airport_oneway_2">
+
+        <EditText
+            android:layout_width="330dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-
+            android:layout_gravity="center|top"
+            android:layout_marginTop="8dp"
             android:background="@drawable/layout_background_train4"
             android:padding="7dp"
-            android:text="  도착지를 입력해주세요."
-            android:textSize="7pt"
-            android:textStyle="bold" />
+            android:hint="  도착지를 입력해주세요."
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="7pt" />
+
+        <Button
+            android:id="@+id/airport_oneway_arriveDay"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="-45dp"
+            android:layout_marginTop="13dp"
+            android:background="@drawable/calendar" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/airport_oneway_4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/airport_oneway_3">
 
         <android.widget.Button
-            android:layout_width="wrap_content"
+            android:id="@+id/airport_oneway_calendar"
+            android:layout_width="120dp"
             android:layout_height="35dp"
-            android:layout_gravity="center"
+            android:layout_gravity="center|top"
+            android:layout_marginStart="150dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/layout_background_train4"
             android:text="가는 날"
             android:textSize="6pt"
             android:textStyle="bold" />
 
+        <android.widget.Button
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center|top"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10pt"
+            android:background="@drawable/serch_icon" />
+
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/railroad3"
+        android:id="@+id/airport_oneway_5"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/railroad2">
+        app:layout_constraintTop_toBottomOf="@+id/airport_oneway_4">
 
         <RadioGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
             android:orientation="horizontal">
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="KTX"
+                android:layout_marginStart="20dp"
+                android:text="일반석"
                 android:textSize="5pt"
                 android:layout_marginEnd="3dp"/>
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ITX-청춘"
+                android:layout_marginStart="10dp"
+                android:text="프리미엄 일반석"
                 android:textSize="5pt"
                 android:layout_marginEnd="3dp"/>
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="새마을호-ITX"
+                android:layout_marginStart="10dp"
+                android:text="비즈니스"
                 android:textSize="5pt"
                 android:layout_marginEnd="3dp"/>
 
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="누리호/무궁화호"
+                android:layout_marginStart="10dp"
+                android:text="퍼스트"
                 android:textSize="5pt"
                 android:layout_marginEnd="3dp"/>
         </RadioGroup>
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/railroad4"
+        android:id="@+id/airport_oneway_6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:background="@drawable/layout_background_train2"
         app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/railroad3">
+        app:layout_constraintTop_toBottomOf="@+id/airport_oneway_5">
 
-        <FrameLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/layout_background_train2"
-            tools:ignore="UselessParent">
+            android:layout_gravity="center"
+            android:layout_marginStart="120dp"
+            android:padding="5dp"
+            android:text="탑승객 :"
+            android:textSize="8pt"
+            android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="-50dp"
-                android:padding="5dp"
-                android:text="탑승객 :"
-                android:textSize="8pt"
-                android:textStyle="bold" />
+        <Button
+            android:id="@+id/airport_oneway_minusBtn"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/minus_icon"
+            android:backgroundTint="@color/white"/>
 
-            <Button
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center"
-                android:layout_marginEnd="5dp"
-                android:background="@drawable/minus_icon"
-                android:backgroundTint="@color/white"/>
+        <TextView
+            android:id="@+id/airport_oneway_count"
+            android:layout_width="30dp"
+            android:layout_height="38dp"
+            android:layout_gravity="center"
+            android:padding="7dp"
+            android:text="0"
+            android:textSize="8pt"
+            android:textStyle="bold" />
 
-            <TextView
-                android:layout_width="30dp"
-                android:layout_height="38dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="23dp"
-                android:padding="7dp"
-                android:text="1"
-                android:textSize="8pt"
-                android:textStyle="bold" />
-
-            <Button
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="45dp"
-                android:background="@drawable/plus_icon"
-                android:backgroundTint="@color/white"/>
+        <Button
+            android:id="@+id/airport_oneway_addBtn"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center"
+            android:background="@drawable/plus_icon"
+            android:backgroundTint="@color/white"/>
 
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="70dp"
-                android:padding="5dp"
-                android:text="명"
-                android:textSize="8pt"
-                android:textStyle="bold" />
-        </FrameLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="5dp"
+            android:text="명"
+            android:textSize="8pt"
+            android:textStyle="bold" />
+
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/railroad5"
+        android:id="@+id/airport_oneway_7"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -216,12 +260,12 @@
         android:orientation="vertical"
         app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/railroad4">
+        app:layout_constraintTop_toBottomOf="@+id/airport_oneway_6">
 
         <ImageView
             android:layout_width="340dp"
             android:layout_height="290dp"
-            android:background="@drawable/train_photo"
+            android:background="@drawable/airport_photo"
             android:layout_weight="1"
             tools:ignore="ContentDescription,Suspicious0dp" />
 
@@ -229,44 +273,43 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="7dp"
-            android:text="다른 교통수단을 원하시면"
+            android:text="@string/text1"
             android:textColor="@color/black"
             android:textStyle="normal"
             android:textSize="7pt" />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/railroad6"
+        android:id="@+id/airport_oneway_8"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
         app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/railroad5">
+        app:layout_constraintTop_toBottomOf="@+id/airport_oneway_7">
 
         <TextView
-            android:id="@+id/rail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#8380D0"
-            android:layout_marginStart="20dp"
-            android:text="고속버스"
+            android:layout_marginStart="25dp"
+            android:text="철도"
             android:textSize="7pt"
             android:textStyle="bold" />
 
         <TextView
             android:layout_width="89dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:text="비행기"
+            android:layout_marginStart="40dp"
+            android:text="고속버스"
             android:textColor="#8380D0"
             android:textSize="7pt"
             android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/railroad7"
+        android:id="@+id/airport_oneway_9"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -274,23 +317,25 @@
         android:orientation="horizontal"
         app:layout_constraintStart_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/railroad6">
+        app:layout_constraintTop_toBottomOf="@+id/airport_oneway_8">
 
         <ImageView
+            android:id="@+id/go_trainBtn"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/train2_icon"
+            tools:ignore="ContentDescription,Suspicious0dp"
+            />
+
+        <ImageView
+            android:id="@+id/go_busBtn"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginRight="20dp"
             android:background="@drawable/bus_icon"
             tools:ignore="ContentDescription,Suspicious0dp"
-             />
-
-        <ImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginRight="20dp"
-            android:background="@drawable/airport_icon"
-            tools:ignore="ContentDescription,Suspicious0dp"
-             />
+            />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

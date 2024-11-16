@@ -7,6 +7,16 @@
     android:background="@drawable/appbg"
     tools:context=".AssignmentFragment">
 
+    <!-- 뒤로 가기 버튼 -->
+    <android.widget.Button
+        android:id="@+id/backspace"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/back_key"/>
+
     <!-- 타볼까 로고 -->
     <ImageView
         android:id="@+id/Tbglogo"
@@ -34,6 +44,7 @@
 
     <!-- 전체 스크롤 가능한 영역 -->
     <ScrollView
+        android:id="@+id/scrollpost"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -75,6 +86,82 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
+                    <!-- 작성자 프로필 사진 및 정보 영역 -->
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintTop_toBottomOf="@id/titleInput"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:gravity="start"
+                        android:layout_marginLeft="10dp">
+
+                        <!-- 작성자 프로필 사진 -->
+                        <ImageView
+                            android:id="@+id/postAuthorProfileImage"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:scaleType="centerCrop"
+                            android:layout_marginEnd="8dp"
+                            android:layout_marginBottom="8dp" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:layout_weight="1">
+
+                            <!-- 작성자 닉네임 -->
+                            <TextView
+                                android:id="@+id/postAuthor"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="작성자: 사용자 이름"
+                                android:textSize="14sp"
+                                android:textColor="#666666" />
+
+                            <!-- 작성일자 -->
+                            <TextView
+                                android:id="@+id/postCreateDay"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="작성일: 2024-11-09"
+                                android:textSize="14sp"
+                                android:textColor="#666666"
+                                android:layout_marginTop="4dp" />
+                        </LinearLayout>
+
+                        <!-- 조회수 및 좋아요 수 영역 -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:gravity="end"
+                            android:layout_marginRight="10dp">
+
+                            <!-- 조회수 -->
+                            <TextView
+                                android:id="@+id/postViews"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="조회수"
+                                android:textSize="14sp"
+                                android:textColor="#666666" />
+
+                            <!-- 좋아요 수 -->
+                            <TextView
+                                android:id="@+id/postLikes"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="좋아요"
+                                android:textSize="14sp"
+                                android:textColor="#666666"
+                                android:layout_marginTop="4dp" />
+                        </LinearLayout>
+                    </LinearLayout>
 
                     <!-- 구분선 -->
                     <View
@@ -122,7 +209,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:gravity="top"
-                        android:text="미안하다 이거 보여주려고 어그로끌었다.. 나루토 사스케 싸움수준 ㄹㅇ실화냐? 진짜 세계관최강자들의 싸움이다.. 그찐따같던 나루토가 맞나? 진짜 나루토는 전설이다..진짜옛날에 맨날나루토봘는데 왕같은존재인 호카게 되서 세계최강 전설적인 영웅이된나루토보면 진짜내가다 감격스럽고 나루토 노래부터 명장면까지 가슴울리는장면들이 뇌리에 스치면서 가슴이 웅장해진다.. 그리고 극장판 에 카카시앞에 운석날라오는 거대한 걸 사스케가 갑자기 순식간에 나타나서 부숴버리곤 개간지나게 나루토가 없다면 마을을 지킬 자는 나밖에 없다 라며 바람처럼 사라진장면은 진짜 나루토처음부터 본사람이면 안울수가없더라 진짜 너무 감격스럽고 보루토를 최근에 알았는데 미안하다.. 지금20화보는데 진짜 나루토세대나와서 너무 감격스럽고 모두어엿하게 큰거보니 내가 다 뭔가 알수없는 추억이라해야되나 그런감정이 이상하게 얽혀있다.. 시노는 말이많아진거같다 좋은선생이고..그리고 보루토왜욕하냐 귀여운데 나루토를보는것같다 성격도 닮았어 그리고버루토에 나루토사스케 둘이싸워도 이기는 신같은존재 나온다는게 사실임?? 그리고인터닛에 쳐봣는디 이거 ㄹㅇㄹㅇ 진짜팩트냐?? 저적이 보루토에 나오는 신급괴물임?ㅡ 나루토사스케 합체한거봐라 진짜 ㅆㅂ 이거보고 개충격먹어가지고 와 소리 저절로 나오더라 ;; 진짜 저건 개오지는데.. 저게 ㄹㅇ이면 진짜 꼭봐야돼 진짜 세계도 파괴시키는거아니야 .. 와 진짜 나루토사스케가 저렇게 되다니 진짜 눈물나려고했다.. 버루토그라서 계속보는중인데 저거 ㄹㅇ이냐..? 하.. ㅆㅂ 사스케 보고싶다..  진짜언제 이렇게 신급 최강들이 되었을까 옛날생각나고 나 중딩때생각나고 뭔가 슬프기도하고 좋기도하고 감격도하고 여러가지감정이 복잡하네.. 아무튼 나루토는 진짜 애니중최거명작임.."
+                        android:text="미안하다 이거 보여주려고 어그로끌었다.. "
                         android:inputType="textMultiLine"
                         android:minLines="10"
                         android:padding="10dp"
@@ -160,6 +247,7 @@
                         android:layout_marginBottom="10dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
+
                 </LinearLayout>
             </LinearLayout>
 
@@ -207,6 +295,7 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <!-- 댓글 목록 리사이클러뷰 -->
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/commentRecyclerView"
                     android:layout_width="match_parent"
@@ -223,7 +312,7 @@
                     android:layout_marginBottom="0dp"
                     android:background="@drawable/rounded_edittext"
                     android:gravity="top"
-                    android:text="댓글 내용을 입력하세요."
+                    android:hint="댓글 내용을 입력하세요."
                     android:inputType="textMultiLine"
                     android:minLines="5"
                     android:padding="10dp"
@@ -254,4 +343,39 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- 기존 레이아웃 구성 -->
+
+        <!-- 우측 하단 FloatingActionButton -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/scrollToBottomButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:contentDescription="댓글쓰기"
+            android:src="@drawable/ic_write1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:backgroundTint="@color/colorPrimary" />
+
+        <ImageButton
+            android:id="@+id/postOptionsMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_edit"
+            android:layout_margin="16dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@android:color/transparent"
+            android:visibility="gone" />
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

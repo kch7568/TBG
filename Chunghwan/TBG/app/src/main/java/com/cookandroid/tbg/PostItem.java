@@ -1,31 +1,42 @@
 // PostItem.java
 package com.cookandroid.tbg;
-
 public class PostItem {
+    private int postNum;
     private String title;
-    private String nickname;  // 닉네임 필드 추가
+    private String nickname;
     private String date;
-    private String profileImageUrl; // 작성자의 프로필 이미지 URL
-    private String postImageUrl; // 게시글의 첨부 이미지 URL
-    private int views; // 조회수
-    private int likes; // 좋아요 갯수
-
-    public PostItem(String title, String nickname, String date, String profileImageUrl, String postImageUrl, int views, int likes) {
+    private String content;
+    private String postImageUrl;
+    private String profileImageUrl;
+    private String videoUrl; // 동영상 URL 필드 추가
+    private int views;
+    private int likes;
+    // 통합된 생성자
+    // 새로운 필드를 포함한 생성자
+    public PostItem(int postNum, String title, String nickname, String date, String content,
+                    String postImageUrl, String profileImageUrl, String videoUrl, int views, int likes) {
+        this.postNum = postNum;
         this.title = title;
         this.nickname = nickname;
         this.date = date;
-        this.profileImageUrl = profileImageUrl;
+        this.content = content;
         this.postImageUrl = postImageUrl;
+        this.profileImageUrl = profileImageUrl;
+        this.videoUrl = videoUrl; // 필드 초기화
         this.views = views;
         this.likes = likes;
     }
 
-    // Getter 및 Setter 메서드
+    // Getter 메서드들
+    public int getPostNum() {
+        return postNum;
+    }
+
     public String getTitle() {
         return title;
     }
 
-    public String getNickname() {
+    public String getAuthor() {
         return nickname;
     }
 
@@ -33,12 +44,21 @@ public class PostItem {
         return date;
     }
 
-    public String getProfileImageUrl() {
-        return profileImageUrl;
+    public String getContent() {
+        return content;
     }
 
     public String getPostImageUrl() {
         return postImageUrl;
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    // Getter 메서드 추가
+    public String getVideoUrl() {
+        return videoUrl;
     }
 
     public int getViews() {
@@ -49,19 +69,8 @@ public class PostItem {
         return likes;
     }
 
-    public void setProfileImageUrl(String profileImageUrl) {
-        this.profileImageUrl = profileImageUrl;
-    }
-
-    public void setPostImageUrl(String postImageUrl) {
-        this.postImageUrl = postImageUrl;
-    }
-
-    public void setViews(int views) {
-        this.views = views;
-    }
-
-    public void setLikes(int likes) {
-        this.likes = likes;
+    public String getNickname() {
+        return nickname;
     }
 }
+

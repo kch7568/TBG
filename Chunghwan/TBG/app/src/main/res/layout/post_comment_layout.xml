@@ -4,14 +4,15 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="8dp"
-    android:layout_margin="8dp">
+    android:layout_margin="8dp"
+    android:layout_marginBottom="5dp">
 
     <!-- 작성자 프로필 사진 및 정보 영역 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="0dp"
         android:gravity="start">
 
         <!-- 작성자 프로필 사진 -->
@@ -67,14 +68,23 @@
 
             <!-- 댓글 수정 버튼 (작성자일 경우에만 노출) -->
             <ImageButton
-                android:id="@+id/editCommentButton"
+                android:id="@+id/commentOptionsMenu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_edit"
-            android:background="@android:color/transparent"
-            android:layout_gravity="end"
-            android:visibility="gone" />
+                android:layout_marginStart="8dp"
+                android:layout_gravity="end"
+                android:background="@android:color/transparent"
+                android:visibility="gone" /> <!-- 기본은 안 보임 -->
+
         </LinearLayout>
     </LinearLayout>
+
+    <!-- 구분선 -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#DDDDDD" />
+
 
 </LinearLayout>

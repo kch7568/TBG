@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <application
         android:allowBackup="true"
@@ -21,16 +26,36 @@
         <activity android:name=".AppMainActivity" />
 
         <activity android:name=".LoginActivity" />
-        <activity android:name=".RailroadActivity2" />
-        <activity android:name=".Test" />
         <activity android:name=".PWresetActivity"/>
         <activity android:name=".SettingActivity"/>
         <activity android:name=".SupportActivity"/>
         <activity android:name=".FaqActivity"/>
         <activity android:name=".HomeActivity"/>
         <activity android:name=".WritingActivity"/>
+
         <activity android:name=".InformationActivity"/>
         <activity android:name=".PostDetailActivity"/>
+
+        <activity android:name=".TrainBetweenActivity"/>
+        <activity android:name=".TrainBetweenArriveActivity"/>
+        <activity android:name=".TrainBetweenStartActivity"/>
+
+        <activity android:name=".TrainOnewayActivity"/>
+        <activity android:name=".TrainOnewayStartActivity"/>    <!--수정중-->
+        <activity android:name=".TrainOnewayArriveActivity"/>
+
+
+        <activity android:name=".BusOnewayActivity"/>
+        <activity android:name=".BusOnewayStartActivity"/>
+        <activity android:name=".BusBetweenActivity"/>
+
+        <activity android:name=".AirportOnewayActivity"/>
+        <activity android:name=".AirportBetweenActivity"/>
+
+        <!-- AdMob 설정 -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713"/>
 
         <!--액티비티 추가시 <application> 안에 추가해줘야함-->
         <activity

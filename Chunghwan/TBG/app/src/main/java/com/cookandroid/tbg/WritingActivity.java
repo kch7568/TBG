@@ -12,6 +12,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -68,6 +69,10 @@ public class WritingActivity extends AppCompatActivity {
         MediaController mediaController = new MediaController(this);
         mediaController.setAnchorView(selectedVideoView);
         selectedVideoView.setMediaController(mediaController);
+
+        // 뒤로가기 클릭 시 돌아가기
+        Button backbtn = findViewById(R.id.backspace);
+        backbtn.setOnClickListener(v -> finish());
 
         SharedPreferences sharedPreferences = getSharedPreferences("AppPrefs", MODE_PRIVATE);
         String sessionId = sharedPreferences.getString("sessionId", null);
