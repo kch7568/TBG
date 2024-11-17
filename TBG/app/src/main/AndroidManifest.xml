@@ -13,32 +13,61 @@
         android:theme="@style/Theme.TBG"
         tools:targetApi="31">
         <activity
+            android:name=".BusBetweenStartActivity"
+            android:exported="false" />
+        <activity
+            android:name=".BusOnewayArriveActivity"
+            android:exported="false" />
+        <activity
+            android:name=".BusOnewayStartActivity"
+            android:exported="false" />
+        <activity
+            android:name=".BusBetweenActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AirportBetweenActivity"
+            android:exported="false" />
+        <activity
             android:name=".AirportOnewayActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TrainBetweenActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TrainOnewayArriveActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TrainBetweenStartActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Railroad2CalendarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".InformationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ReservePage1Activity"
             android:exported="false" />
         <activity
             android:name=".BusOnewayActivity"
             android:exported="false" />
         <activity
-            android:name=".LayoutBackgroundActivity2"
-            android:exported="false" />
-        <activity
-            android:name=".LayoutBackgroundActivity"
-            android:exported="false" />
-        <activity
             android:name=".TrainOnewayActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TrainBetweenArriveActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RegisterActivity"
             android:exported="false" />
         <activity
             android:name=".Register2Activity"
             android:exported="false" />
         <activity
-            android:name=".ui.login.LoginActivity2"
-            android:exported="false"
-            android:label="@string/title_activity_login2" />
-        <activity
-            android:name=".RegisterActivity"
-            android:exported="false" />
-        <activity
-            android:name=".LoginActivity"
+            android:name=".TrainOnewayStartActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

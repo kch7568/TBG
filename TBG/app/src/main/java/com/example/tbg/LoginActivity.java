@@ -14,6 +14,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 public class LoginActivity extends AppCompatActivity {
     TextView registerButton;
+    TextView LoginButton;
     TextView findid;
 
     @SuppressLint({"WrongViewCast", "MissingInflatedId"})
@@ -31,6 +32,8 @@ public class LoginActivity extends AppCompatActivity {
                startActivity(intent);
           }
         });
+
+
 
 
         registerButton = findViewById(R.id.registerButton);

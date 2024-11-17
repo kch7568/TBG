@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".InformationActivity">
+
+    <LinearLayout
+        android:id="@+id/page1"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@drawable/tbg_backcolor"
+        android:orientation="horizontal"
+        tools:ignore="MissingConstraints">
+
+        <Button
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="5pt"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/back_key" />
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="35pt"
+            android:text="       서울 - 도쿄                9월11일 - 9월17일"
+            android:textStyle="bold"
+            android:textSize="8pt"/>
+    </LinearLayout>
+
+    <LinearLayout
+        app:layout_constraintTop_toBottomOf="@+id/page1"
+        android:id="@+id/page2"
+        android:layout_width="match_parent"
+        android:layout_height="170pt"
+        android:background="@drawable/tbg_backcolor"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="170pt"
+        android:background="@drawable/layout_background_train3"
+        android:gravity="center|top"
+        android:text="선택된 항공편"
+        android:textSize="8pt"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="70dp"
+        tools:ignore="MissingConstraints"></TextView>
+
+    <TextView
+        android:layout_width="80pt"
+        android:layout_height="25pt"
+        android:background="@drawable/layout_information1"
+        android:gravity="center|top"
+
+        tools:layout_editor_absoluteX="7dp"
+        tools:layout_editor_absoluteY="115dp">
+    </TextView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2024.09.11(목)"
+        tools:layout_editor_absoluteX="41dp"
+        tools:layout_editor_absoluteY="122dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="오전 9 : 50 ~ 오후 12 : 00"
+        tools:layout_editor_absoluteX="34dp"
+        tools:layout_editor_absoluteY="143dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="경유 2회"
+        android:textColor="#FF0000"
+        android:textSize="5pt"
+        tools:layout_editor_absoluteX="143dp"
+        tools:layout_editor_absoluteY="126dp" />
+
+
+    <TextView
+        android:layout_width="80pt"
+        android:layout_height="25pt"
+        android:background="@drawable/layout_information1"
+        android:gravity="center|top"
+        tools:layout_editor_absoluteX="7dp"
+        tools:layout_editor_absoluteY="176dp">
+
+    </TextView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="오후 3 : 30 ~ 오후 5 : 30"
+        tools:layout_editor_absoluteX="34dp"
+        tools:layout_editor_absoluteY="205dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2024.09.17(화)"
+        tools:layout_editor_absoluteX="41dp"
+        tools:layout_editor_absoluteY="183dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="직항"
+        android:textSize="5pt"
+        tools:layout_editor_absoluteX="164dp"
+        tools:layout_editor_absoluteY="188dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="김포공항(GMP) -> 나리타공항(NRT)"
+        android:textSize="5pt"
+        tools:layout_editor_absoluteX="215dp"
+        tools:layout_editor_absoluteY="143dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="대한항공(KAL)"
+        android:textSize="5pt"
+        tools:layout_editor_absoluteX="259dp"
+        tools:layout_editor_absoluteY="122dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="나리타공항(NRT) -> 김포공항(GMP)"
+        android:textSize="5pt"
+        tools:layout_editor_absoluteX="215dp"
+        tools:layout_editor_absoluteY="209dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="아시아나항공(AAL)"
+        android:textSize="5pt"
+        tools:layout_editor_absoluteX="251dp"
+        tools:layout_editor_absoluteY="192dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" ₩105,970"
+        android:textSize="12pt"
+        tools:layout_editor_absoluteX="154dp"
+        tools:layout_editor_absoluteY="244dp" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="선택 항공편의 최저가 입니다."
+        android:textSize="5pt"
+        tools:layout_editor_absoluteX="143dp"
+        tools:layout_editor_absoluteY="281dp" />
+
+    <TextView
+        android:layout_width="162pt"
+        android:layout_height="40pt"
+        android:background="@drawable/layout_background_train2"
+        android:gravity="center|top"
+
+        tools:layout_editor_absoluteX="17dp"
+        tools:layout_editor_absoluteY="307dp">
+
+    </TextView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="검색 조건"
+        android:textSize="10pt"
+        tools:layout_editor_absoluteX="168dp"
+        tools:layout_editor_absoluteY="316dp" />
+
+    <TextView
+        android:layout_width="50pt"
+        android:layout_height="15pt"
+        android:background="@drawable/layout_background_train4"
+        android:gravity="center"
+        android:text="이동방법 : 왕복"
+
+        tools:layout_editor_absoluteX="26dp"
+        tools:layout_editor_absoluteY="357dp">
+    </TextView>
+
+    <TextView
+        android:layout_width="47pt"
+        android:layout_height="15pt"
+        android:background="@drawable/layout_background_train4"
+        android:gravity="center"
+        android:text="좌석 : 일반석"
+
+        tools:layout_editor_absoluteX="150dp"
+        tools:layout_editor_absoluteY="357dp"></TextView>
+
+    <TextView
+        android:layout_width="47pt"
+        android:layout_height="15pt"
+        android:background="@drawable/layout_background_train4"
+        android:gravity="center"
+        android:text="인원수 : 1명"
+
+        tools:layout_editor_absoluteX="271dp"
+        tools:layout_editor_absoluteY="357dp"></TextView>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="이 곳을 눌러 재검색 하세요."
+        android:textSize="5pt"
+        tools:layout_editor_absoluteX="135dp"
+        tools:layout_editor_absoluteY="436dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="조건이 맞지 않으신가요?"
+        android:textSize="5pt"
+        tools:layout_editor_absoluteX="143dp"
+        tools:layout_editor_absoluteY="419dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        app:layout_constraintTop_toBottomOf="@+id/page2"
+        android:layout_width="match_parent"
+        android:layout_height="105pt"
+        android:background="@drawable/tbg_backcolor"
+        android:orientation="vertical"
+        tools:ignore="MissingConstraints">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="105pt"
+
+        android:background="@drawable/layout_background_train3"
+        android:gravity="center|top"
+        android:text="이 항공편을 판매하는 다른 예약 사이트"
+        android:textSize="7pt"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="7dp"
+        tools:layout_editor_absoluteY="482dp"></TextView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="트립닷컴"
+        android:textSize="8pt"
+        tools:layout_editor_absoluteX="52dp"
+        tools:layout_editor_absoluteY="619dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="인터파크"
+        android:textSize="8pt"
+        tools:layout_editor_absoluteX="52dp"
+        tools:layout_editor_absoluteY="548dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="4.2/5"
+        android:textSize="6pt"
+        tools:layout_editor_absoluteX="77dp"
+        tools:layout_editor_absoluteY="529dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" ₩110,000"
+        android:textSize="11pt"
+        tools:layout_editor_absoluteX="264dp"
+        tools:layout_editor_absoluteY="541dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="4.0/5"
+        android:textSize="6pt"
+        tools:layout_editor_absoluteX="77dp"
+        tools:layout_editor_absoluteY="600dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" ₩115,000"
+        android:textSize="11pt"
+        tools:layout_editor_absoluteX="264dp"
+        tools:layout_editor_absoluteY="612dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="....아래로 슬라이드...."
+        android:textSize="5pt"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="154dp"
+        tools:layout_editor_absoluteY="698dp" />
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
