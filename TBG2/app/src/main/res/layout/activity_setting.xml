@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/appbg">
+
+    <android.widget.Button
+        android:id="@+id/backspace"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="10dp">
+
+    </android.widget.Button>
+
+    <!-- 스크롤 가능한 컨텐츠 영역 -->
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/backspace"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp">
+
+            <!-- 둥근 사각형 배경을 가진 ConstraintLayout -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/menuBackground"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintWidth_percent="0.9"
+                app:layout_constraintHeight_percent="0.79">
+
+                <!-- 자물쇠 아이콘 -->
+                <ImageView
+                    android:id="@+id/lockIcon"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="30dp"/>
+
+                <!-- 설정 및 관리 텍스트 -->
+                <TextView
+                    android:id="@+id/passwordChangeTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="설정 및 관리"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    android:textColor="#000000"
+                    app:layout_constraintTop_toBottomOf="@id/lockIcon"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="10dp"/>
+
+                <LinearLayout
+                    android:id ="@+id/menubox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintTop_toBottomOf="@id/passwordChangeTitle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp">
+
+                    <!-- 목록 아이템 1 -->
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/adsetting"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="12dp"
+                        android:background="#FFFFFF">
+
+                        <ImageView
+                            android:id="@+id/ad"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:contentDescription="광고 및 푸시 아이콘"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="광고 및 푸시알림"
+                            android:layout_marginStart="8dp"
+                            android:textSize="16sp"
+                            android:textColor="#000000"
+                            app:layout_constraintStart_toEndOf="@id/ad"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"/>
+
+                        <Switch
+                            android:id="@+id/adSwitch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"/>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                    <!-- 구분선 -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#DDDDDD"/>
+
+                    <!-- 목록 아이템 2 -->
+                    <LinearLayout
+                        android:layout_marginTop="20dp"
+                        android:id="@+id/question"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="12dp"
+                        android:background="#FFFFFF">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:contentDescription="질문 아이콘"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="자주 묻는 질문(FAQ)"
+                            android:layout_marginStart="8dp"
+                            android:textSize="16sp"
+                            android:textColor="#000000"/>
+                    </LinearLayout>
+
+                    <!-- 구분선 -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#DDDDDD"/>
+
+                    <!-- 목록 아이템 3 -->
+                    <LinearLayout
+                        android:layout_marginTop="20dp"
+                        android:id="@+id/information"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="12dp"
+                        android:background="#FFFFFF">
+
+                        <ImageView
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:contentDescription="개인정보 처리방침 아이콘"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="개인정보 처리방침"
+                            android:layout_marginStart="8dp"
+                            android:textSize="16sp"
+                            android:textColor="#000000"/>
+                    </LinearLayout>
+
+                    <!-- 구분선 -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#DDDDDD"/>
+
+                    <!-- 목록 아이템 4 -->
+                    <LinearLayout
+                        android:layout_marginTop="20dp"
+                        android:id="@+id/pwReset"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="12dp"
+                        android:background="#FFFFFF">
+
+                        <TextView
+                            android:gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:text="로그아웃 하기"
+                            android:layout_marginStart="8dp"
+                            android:textSize="16sp"
+                            android:textColor="#3C3CFF"/>
+                    </LinearLayout>
+
+                    <!-- 구분선 -->
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#DDDDDD"/>
+
+                </LinearLayout>
+
+                <!-- 앱 버전 텍스트 -->
+                <TextView
+                    android:id="@+id/version"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="앱 버전 : 1.01"
+                    android:textSize="17sp"
+                    app:layout_constraintTop_toBottomOf="@id/menubox"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="16dp"/>
+
+                <!-- 구분선 -->
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:background="#000000"
+                    app:layout_constraintStart_toStartOf="@+id/version"
+                    app:layout_constraintEnd_toEndOf="@+id/version"
+                    app:layout_constraintTop_toBottomOf="@id/version"
+                    android:layout_marginTop="8dp"/>
+
+                <!-- 회원 탈퇴 텍스트 -->
+                <TextView
+                    android:id="@+id/deleteAccount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="회원 탈퇴하기"
+                    android:textSize="17sp"
+                    android:textColor="#ff0000"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_margin="30dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- 아래에 위치한 TBG 로고 -->
+            <ImageView
+                android:id="@+id/tbgIcon"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                app:layout_constraintTop_toBottomOf="@id/menuBackground"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="50dp"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

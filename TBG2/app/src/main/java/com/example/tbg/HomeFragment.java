@@ -1,6 +1,8 @@
 package com.example.tbg;
 
 import android.app.AlertDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -91,6 +93,7 @@ public class HomeFragment extends Fragment {
         }
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -109,6 +112,18 @@ public class HomeFragment extends Fragment {
         mAdView.setBackgroundColor(Color.TRANSPARENT); // 광고 배경 투명하게 설정
         mAdView.loadAd(adRequest);
 
+        // SharedPreferences에서 광고 상태 확인
+        SharedPreferences prefs = requireContext().getSharedPreferences("AppSettings", Context.MODE_PRIVATE);
+        boolean adEnabled = prefs.getBoolean("ad_enabled", true);
+
+        // 광고 상태에 따라 표시/숨김 처리
+        if (adEnabled) {
+            mAdView.setVisibility(View.VISIBLE);
+            mAdView.loadAd(adRequest);
+        } else {
+            mAdView.setVisibility(View.GONE);
+        }
+
         // UI 요소 초기화
         WelcomeMessage = view.findViewById(R.id.WelcomeMessage);
         locationTextView = view.findViewById(R.id.locationTextView);
@@ -117,6 +132,7 @@ public class HomeFragment extends Fragment {
         dateTextView = view.findViewById(R.id.dateTextView);
         weatherIconImageView = view.findViewById(R.id.weatherIconImageView);
         popTextView = view.findViewById(R.id.popTextView);
+
 
         // FusedLocationProviderClient 초기화
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity());
@@ -171,6 +187,23 @@ public class HomeFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Fragment가 다시 보일 때마다 광고 상태 확인
+        SharedPreferences prefs = requireContext().getSharedPreferences("AppSettings", Context.MODE_PRIVATE);
+        boolean adEnabled = prefs.getBoolean("ad_enabled", true);
+        if (mAdView != null) {
+            if (adEnabled) {
+                mAdView.setVisibility(View.VISIBLE);
+                AdRequest adRequest = new AdRequest.Builder().build();
+                mAdView.loadAd(adRequest);
+            } else {
+                mAdView.setVisibility(View.GONE);
+            }
+        }
     }
 
     private void checkAndRequestPermissions() {

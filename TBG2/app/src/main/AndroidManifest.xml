@@ -19,6 +19,10 @@
 
         <!-- 액티비티 선언 -->
         <activity
+            android:name=".SettingActivity">
+
+        </activity>
+        <activity
             android:name=".HomeActivity"
             android:exported="false" />
         <activity
