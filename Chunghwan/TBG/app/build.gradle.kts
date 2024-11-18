@@ -62,7 +62,7 @@ dependencies {
     implementation ("com.squareup.picasso:picasso:2.71828") //이미지 로드 라이브러리
     implementation("com.google.android.gms:play-services-location:21.3.0") //gps 기반 위치 정보
 
-
+    implementation("com.airbnb.android:lottie:3.4.0");  // 동적 애니추가
 
 
 

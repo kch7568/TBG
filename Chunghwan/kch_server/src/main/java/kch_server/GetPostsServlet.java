@@ -45,6 +45,9 @@ public class GetPostsServlet extends HttpServlet {
                 postObject.put("date", post.getCreateDate());
                 postObject.put("profileImageUrl", post.getProfileImageUrl() != null ? post.getProfileImageUrl() : "http://localhost:8888/kch_server/images/default_profile.jpg");
                 
+                // **authorId 추가**
+                postObject.put("authorId", post.getAuthor()); // 작성자 ID 추가
+                
                 // content 필드를 추가하여 게시물 내용 포함
                 postObject.put("content", post.getContent() != null ? post.getContent() : "내용 없음");
 

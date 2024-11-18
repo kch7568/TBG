@@ -39,15 +39,15 @@ CREATE TABLE Alert (
     FOREIGN KEY (User_Id) REFERENCES User(User_Id) ON DELETE CASCADE
 );
 
--- (Favorites)
+-- Favorites 테이블
 CREATE TABLE Favorites (
-    User_Id VARCHAR(20) NOT NULL,
-    Fav_Id INT UNSIGNED AUTO_INCREMENT NOT NULL,
-    Post_Num INT UNSIGNED NOT NULL,
-    PRIMARY KEY (Fav_Id),
-    FOREIGN KEY (User_Id) REFERENCES User(User_Id) ON DELETE CASCADE,
-    FOREIGN KEY (Post_Num) REFERENCES Post(Post_Num)
+    User_Id VARCHAR(20) NOT NULL,      -- 사용자 ID
+    Post_Num INT UNSIGNED NOT NULL,    -- 게시물 번호
+    PRIMARY KEY (User_Id, Post_Num),   -- User_Id와 Post_Num의 조합으로 중복 방지
+    FOREIGN KEY (User_Id) REFERENCES User(User_Id) ON DELETE CASCADE,  -- 사용자 삭제 시 즐겨찾기도 삭제
+    FOREIGN KEY (Post_Num) REFERENCES Post(Post_Num) ON DELETE CASCADE -- 게시물 삭제 시 즐겨찾기도 삭제
 );
+
 
 -- (Comment)
 CREATE TABLE Comment (
@@ -57,7 +57,7 @@ CREATE TABLE Comment (
     Post_Num INT UNSIGNED NOT NULL,
     User_Id VARCHAR(20) NOT NULL,
     PRIMARY KEY (Comment_Id),
-    FOREIGN KEY (Post_Num) REFERENCES Post(Post_Num),
+    FOREIGN KEY (Post_Num) REFERENCES Post(Post_Num) ON DELETE CASCADE,   -- 수정
     FOREIGN KEY (User_Id) REFERENCES User(User_Id) ON DELETE CASCADE
 );
 
@@ -108,7 +108,7 @@ CREATE TABLE MyProfile (
 
 
 -- User_Id 참조하는 모든 외래키에 Cascade 설정(삭제하면 다지워지게)
-
+ -- Favorites 구조 수정(한 게시글당 즐겨찾기 중복 방지)
 
 
 INSERT INTO Category (Category_Code, Category_Name) VALUES
@@ -116,5 +116,6 @@ INSERT INTO Category (Category_Code, Category_Name) VALUES
 ('B', '교통수단'),
 ('C', '호텔'),
 ('D', '자유게시판');
+----------------------------------------------------------------------------------------------------------------------------------
 
 

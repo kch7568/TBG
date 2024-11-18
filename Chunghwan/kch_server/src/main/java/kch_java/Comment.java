@@ -1,20 +1,25 @@
 package kch_java;
 
+
 public class Comment {
     private String author; // 작성자
     private String content; // 내용
     private String date; // 날짜
     private String profileImageUrl; // 프로필 이미지 URL
+    private String authorId; // 작성자 ID
+    private String commentId; // 댓글 ID
 
-    // 생성자
-    public Comment(String author, String content, String date, String profileImageUrl) {
+    // Constructor
+    public Comment(String author, String content, String date, String profileImageUrl, String authorId, String commentId) {
         this.author = author;
         this.content = content;
         this.date = date;
         this.profileImageUrl = profileImageUrl;
+        this.authorId = authorId;
+        this.commentId = commentId;
     }
 
-    // Getter 메서드
+    // Getter methods
     public String getAuthor() {
         return author;
     }
@@ -29,5 +34,13 @@ public class Comment {
 
     public String getProfileImageUrl() {
         return profileImageUrl;
+    }
+
+    public String getAuthorId() {
+        return authorId;
+    }
+
+    public String getCommentId() {
+        return commentId;
     }
 }

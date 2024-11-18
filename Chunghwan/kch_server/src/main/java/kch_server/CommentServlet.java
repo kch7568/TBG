@@ -49,9 +49,12 @@ public class CommentServlet extends HttpServlet {
                 commentObject.put("content", comment.getContent());
                 commentObject.put("date", comment.getDate());
                 commentObject.put("profileImageUrl", comment.getProfileImageUrl());
+                commentObject.put("authorId", comment.getAuthorId()); // 작성자 ID 추가
+                commentObject.put("commentId", comment.getCommentId()); // 댓글 ID 추가
                 commentArray.put(commentObject);
             }
             out.print(commentArray.toString());
+
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);

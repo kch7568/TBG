@@ -481,7 +481,7 @@ public class DAO_User extends BaseDAO {
 	
 	public List<Comment> getCommentsByPostId(String postId) {
 	    List<Comment> commentList = new ArrayList<>();
-	    String sql = "SELECT c.Comment_Contents, c.Comment_Date, u.Nickname, mp.My_postURL AS profileImageUrl " +
+	    String sql = "SELECT c.Comment_Id, c.Comment_Contents, c.Comment_Date, u.User_Id AS authorId, u.Nickname, mp.My_postURL AS profileImageUrl " +
 	                 "FROM Comment c " +
 	                 "JOIN User u ON c.User_Id = u.User_Id " +
 	                 "LEFT JOIN MyProfile mp ON u.User_Id = mp.User_Id " +
@@ -496,8 +496,10 @@ public class DAO_User extends BaseDAO {
 	            String content = rs.getString("Comment_Contents");
 	            String date = rs.getString("Comment_Date");
 	            String profileImageUrl = rs.getString("profileImageUrl");
+	            String authorId = rs.getString("authorId");
+	            String commentId = rs.getString("Comment_Id");
 
-	            commentList.add(new Comment(author, content, date, profileImageUrl));
+	            commentList.add(new Comment(author, content, date, profileImageUrl, authorId, commentId));
 	        }
 	    } catch (SQLException e) {
 	        e.printStackTrace();
@@ -507,21 +509,38 @@ public class DAO_User extends BaseDAO {
 
 
 
+
 	
-	public boolean saveComment(String postId, String userId, String content) {
+	public String saveComment(String postId, String userId, String content) {
 	    String sql = "INSERT INTO Comment (Comment_Date, Comment_Contents, Post_Num, User_Id) VALUES (NOW(), ?, ?, ?)";
-	    try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	    ResultSet rs = null;
+
+	    try (PreparedStatement pstmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 	        pstmt.setString(1, content);
 	        pstmt.setString(2, postId);
 	        pstmt.setString(3, userId);
 	        
-	        int insertedRows = pstmt.executeUpdate();
-	        return insertedRows > 0; // 성공적으로 저장되면 true 반환
+	        int affectedRows = pstmt.executeUpdate();
+	        
+	        if (affectedRows > 0) {
+	            // 생성된 Comment_Id 가져오기
+	            rs = pstmt.getGeneratedKeys();
+	            if (rs.next()) {
+	                return String.valueOf(rs.getInt(1)); // Comment_Id를 문자열 형태로 반환
+	            }
+	        }
 	    } catch (SQLException e) {
 	        e.printStackTrace();
-	        return false; // 저장 실패 시 false 반환
+	    } finally {
+	        try {
+	            if (rs != null) rs.close();
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
 	    }
+	    return null; // 실패 시 null 반환
 	}
+
 
 
 
@@ -583,5 +602,207 @@ public class DAO_User extends BaseDAO {
         likeRecords.put(key, LocalDate.now());
         System.out.println("좋아요 기록 업데이트 완료: " + key);
     }
-	
+    
+    public boolean updatePost(int postNum, String userId, String title, String content, String categoryCode) {
+        String sql = "UPDATE Post SET Post_Title = ?, Post_Content = ?, Category_Code = ? WHERE Post_Num = ? AND User_Id = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, title);
+            pstmt.setString(2, content);
+            pstmt.setString(3, categoryCode);
+            pstmt.setInt(4, postNum);
+            pstmt.setString(5, userId);
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean updateFile(int postNum, String filePath, String fileName, String fileExtension, String fileCapacity) {
+        String deleteOldFileSql = "DELETE FROM File WHERE Post_Num = ?";
+        String insertNewFileSql = "INSERT INTO File (Post_Num, File_Path, File_name, File_extension, File_capacity) VALUES (?, ?, ?, ?, ?)";
+        try {
+            conn.setAutoCommit(false);
+            try (PreparedStatement deleteStmt = conn.prepareStatement(deleteOldFileSql);
+                 PreparedStatement insertStmt = conn.prepareStatement(insertNewFileSql)) {
+
+                // 기존 파일 삭제
+                deleteStmt.setInt(1, postNum);
+                deleteStmt.executeUpdate();
+
+                // 새 파일 정보 삽입
+                insertStmt.setInt(1, postNum);
+                insertStmt.setString(2, filePath);
+                insertStmt.setString(3, fileName);
+                insertStmt.setString(4, fileExtension);  // 실제 파일 확장자 저장
+                insertStmt.setString(5, fileCapacity);
+                insertStmt.executeUpdate();
+
+                conn.commit();
+                return true;
+            } catch (SQLException e) {
+                conn.rollback();
+                e.printStackTrace();
+                return false;
+            } finally {
+                conn.setAutoCommit(true);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    public boolean deletePost(int postNum, String userId) {
+        String sql = "DELETE FROM Post WHERE Post_Num = ? AND User_Id = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, postNum);
+            pstmt.setString(2, userId);
+
+            int rowsAffected = pstmt.executeUpdate();
+            return rowsAffected > 0; // 삭제된 행이 1개 이상이면 성공
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // 오류 발생 시 false 반환
+        }
+    }
+    public boolean deleteComment(String commentId) {
+        String sql = "DELETE FROM Comment WHERE Comment_Id = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, commentId);
+            int deletedRows = pstmt.executeUpdate();
+            return deletedRows > 0; // 삭제 성공 여부 반환
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public boolean addFavorite(String userId, int postNum) {
+        String checkSql = "SELECT 1 FROM Favorites WHERE User_Id = ? AND Post_Num = ?";
+        String insertSql = "INSERT INTO Favorites (User_Id, Post_Num) VALUES (?, ?)";
+
+        try (PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
+            // 중복 확인
+            checkStmt.setString(1, userId);
+            checkStmt.setInt(2, postNum);
+            ResultSet rs = checkStmt.executeQuery();
+            if (rs.next()) {
+                // 이미 즐겨찾기에 추가된 경우
+                System.out.println("즐겨찾기에 이미 존재합니다: User_Id=" + userId + ", Post_Num=" + postNum);
+                return false; // 중복된 경우 false 반환
+            }
+
+            // 중복되지 않은 경우 삽입
+            try (PreparedStatement insertStmt = conn.prepareStatement(insertSql)) {
+                insertStmt.setString(1, userId);
+                insertStmt.setInt(2, postNum);
+                return insertStmt.executeUpdate() > 0; // 삽입 성공 여부 반환
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    public boolean removeFavorite(String userId, int postNum) {
+        String checkSql = "SELECT 1 FROM Favorites WHERE User_Id = ? AND Post_Num = ?";
+        String deleteSql = "DELETE FROM Favorites WHERE User_Id = ? AND Post_Num = ?";
+
+        try (PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
+            checkStmt.setString(1, userId);
+            checkStmt.setInt(2, postNum);
+            ResultSet rs = checkStmt.executeQuery();
+
+            if (!rs.next()) {
+                // 삭제할 항목이 없을 경우
+                System.out.println("삭제 대상이 존재하지 않습니다: User_Id=" + userId + ", Post_Num=" + postNum);
+                return false;
+            }
+
+            // 삭제 수행
+            try (PreparedStatement deleteStmt = conn.prepareStatement(deleteSql)) {
+                deleteStmt.setString(1, userId);
+                deleteStmt.setInt(2, postNum);
+                return deleteStmt.executeUpdate() > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    public List<Integer> getUserFavorites(String userId) {
+        List<Integer> favoritePosts = new ArrayList<>();
+        String sql = "SELECT Post_Num FROM Favorites WHERE User_Id = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, userId);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                favoritePosts.add(rs.getInt("Post_Num"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return favoritePosts;
+    }
+    
+    public boolean isFavorite(String userId, int postNum) {
+        String sql = "SELECT 1 FROM Favorites WHERE User_Id = ? AND Post_Num = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, userId);
+            pstmt.setInt(2, postNum);
+            ResultSet rs = pstmt.executeQuery();
+            return rs.next(); // 결과가 존재하면 true 반환
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // 오류 발생 시 false 반환
+        }
+    }
+
+    public int getFavoriteCount(String userId) throws SQLException {
+        if (!isUserExists(userId)) {
+            throw new IllegalArgumentException("User with ID " + userId + " does not exist.");
+        }
+
+        String sql = "SELECT COUNT(*) FROM Favorites WHERE User_Id = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, userId);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1); // 즐겨찾기 개수 반환
+            }
+        }
+        return 0; // 기본값 반환
+    }
+    
+    public int getPostCount(String userId) throws SQLException {
+        if (!isUserExists(userId)) {
+            throw new IllegalArgumentException("User with ID " + userId + " does not exist.");
+        }
+
+        String sql = "SELECT COUNT(*) FROM Post WHERE User_Id = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, userId);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1); // 게시글 개수 반환
+            }
+        }
+        return 0; // 기본값 반환
+    }
+
+    public boolean isUserExists(String userId) throws SQLException {
+        String sql = "SELECT 1 FROM User WHERE User_Id = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, userId);
+            ResultSet rs = pstmt.executeQuery();
+            return rs.next(); // 결과가 있으면 true 반환
+        }
+    }
+
+
+    
 }

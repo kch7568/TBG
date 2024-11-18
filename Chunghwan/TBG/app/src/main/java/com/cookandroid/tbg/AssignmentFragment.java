@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,6 +34,10 @@ public class AssignmentFragment extends Fragment {
     private static final String TAG = "AssignmentFragment";
     private String selectedCategoryCode = "전체"; // 기본값으로 전체 설정
     private SwipeRefreshLayout swipeRefreshLayout;
+
+    private androidx.appcompat.widget.SearchView searchView;
+    private List<PostItem> filteredList = new ArrayList<>(); // 필터링된 리스트
+
 
     public AssignmentFragment() {
         // Required empty public constructor
@@ -62,8 +67,13 @@ public class AssignmentFragment extends Fragment {
         postsRecyclerView = view.findViewById(R.id.postsRecyclerView);
         postsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+
+
+// Adapter 초기화 시 filteredList 사용
+        postsAdapter = new PostsAdapter(getContext(), filteredList);
+        postsRecyclerView.setAdapter(postsAdapter);
+
         // Set up the adapter and handle item clicks
-        postsAdapter = new PostsAdapter(getContext(), postItemList);
         postsAdapter.setOnItemClickListener(post -> {
             // Create an Intent to navigate to the PostDetailActivity
             Intent intent = new Intent(getActivity(), PostDetailActivity.class);
@@ -87,14 +97,37 @@ public class AssignmentFragment extends Fragment {
             intent.putExtra("content", post.getContent()); // 본문 내용 전달
             intent.putExtra("postImageUrl", post.getPostImageUrl()); // 게시글 이미지 URL 전달
             intent.putExtra("profileImageUrl", post.getProfileImageUrl()); // 프로필 이미지 URL 전달
-                intent.putExtra("postVideoUrl", post.getVideoUrl());
+            intent.putExtra("postVideoUrl", post.getVideoUrl());
             intent.putExtra("views", post.getViews());
             intent.putExtra("likes", post.getLikes());
+            intent.putExtra("authorId",post.getAuthor());  //추가
             startActivity(intent);
         });
 
 
-        postsRecyclerView.setAdapter(postsAdapter);
+
+
+        SearchView searchView = view.findViewById(R.id.searchView);
+
+        // SearchView 초기화
+
+// SearchView 리스너 설정
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                filterPosts(query); // 텍스트 제출 시 필터링
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterPosts(newText); // 텍스트 변경 시 필터링
+                return false;
+            }
+        });
+
+
+
 
         // Initialize the RadioGroup for category selection
         RadioGroup categoryGroup = view.findViewById(R.id.categoryGroup);
@@ -133,6 +166,24 @@ public class AssignmentFragment extends Fragment {
         fetchPostsFromServer(selectedCategoryCode);
     }
 
+    private void filterPosts(String query) {
+        filteredList.clear();
+        if (query.isEmpty()) {
+            filteredList.addAll(postItemList);
+        } else {
+            for (PostItem post : postItemList) {
+                if (post.getTitle().toLowerCase().contains(query.toLowerCase()) ||
+                        post.getContent().toLowerCase().contains(query.toLowerCase()) ||
+                        post.getNickname().toLowerCase().contains(query.toLowerCase())) {
+                    filteredList.add(post);
+                }
+            }
+        }
+        postsAdapter.notifyDataSetChanged();
+    }
+
+
+
     // Method to fetch posts from the server based on selected category
     private void fetchPostsFromServer(String categoryCode) {
         new Thread(() -> {
@@ -168,6 +219,7 @@ public class AssignmentFragment extends Fragment {
 
                     JSONArray postArray = new JSONArray(response.toString());
                     postItemList.clear(); // Clear the list before adding new items
+                    filteredList.clear();
 
                     for (int i = 0; i < postArray.length(); i++) {
                         JSONObject postObject = postArray.getJSONObject(i);
@@ -180,11 +232,14 @@ public class AssignmentFragment extends Fragment {
                         String postImageUrl = postObject.optString("postImageUrl", "");
                         String profileImageUrl = postObject.optString("profileImageUrl", "");
                         String videoUrl = postObject.optString("postVideoUrl", ""); // 추가된 videoUrl
+                        String authorId = postObject.optString("authorId", "");  //추가
                         int views = postObject.getInt("views");
                         int likes = postObject.getInt("likes");
 
-                        PostItem post = new PostItem(postNum, title, nickname, date, content, postImageUrl, profileImageUrl, videoUrl, views, likes);
+                        PostItem post = new PostItem(postNum, title, nickname, date, content, postImageUrl, profileImageUrl, videoUrl, views, likes, authorId);
                         postItemList.add(post);
+                        filteredList.add(post); // 초기화 시 필터링 리스트에도 추가
+
 
                         Log.d(TAG, "Post added: " + post.getTitle());
                     }

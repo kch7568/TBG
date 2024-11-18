@@ -9,12 +9,13 @@ public class PostItem {
     private String postImageUrl;
     private String profileImageUrl;
     private String videoUrl; // 동영상 URL 필드 추가
+    private String authorid;
     private int views;
     private int likes;
     // 통합된 생성자
     // 새로운 필드를 포함한 생성자
     public PostItem(int postNum, String title, String nickname, String date, String content,
-                    String postImageUrl, String profileImageUrl, String videoUrl, int views, int likes) {
+                    String postImageUrl, String profileImageUrl, String videoUrl, int views, int likes, String authorid) {
         this.postNum = postNum;
         this.title = title;
         this.nickname = nickname;
@@ -25,6 +26,7 @@ public class PostItem {
         this.videoUrl = videoUrl; // 필드 초기화
         this.views = views;
         this.likes = likes;
+        this.authorid = authorid;
     }
 
     // Getter 메서드들

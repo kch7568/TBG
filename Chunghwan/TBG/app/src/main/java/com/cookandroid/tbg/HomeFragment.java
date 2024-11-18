@@ -206,7 +206,7 @@ public class HomeFragment extends Fragment {
     }
     private void getWeatherData(double latitude, double longitude) {
 
-        String apiKey = "";  // OpenWeatherMap에서 발급받은 API 키
+        String apiKey = "6ec54b4c04428a67f3d87a7c2f09888b";  // OpenWeatherMap에서 발급받은 API 키
         String units = "metric";  // 섭씨 온도 단위
 
         WeatherService weatherService = RetrofitClient.getWeatherClient().create(WeatherService.class);
@@ -251,7 +251,7 @@ public class HomeFragment extends Fragment {
 
     private void getAddressFromLocation(double latitude, double longitude) {
         String latlng = latitude + "," + longitude;
-        String apiKey = ""; // google map api키,일 평균 900회 정도의 요청을 무료로 사용 가능
+        String apiKey = "AIzaSyDFESraC9vq9IBGK35EOVLCFO-twHyHBoE"; // google map api키,일 평균 900회 정도의 요청을 무료로 사용 가능
         String language = "ko"; // 한국어로 결과 요청
 
         GeocodingService service = RetrofitClient.getGeocodingClient().create(GeocodingService.class);

@@ -1,5 +1,6 @@
 package com.cookandroid.tbg;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -61,12 +62,16 @@ public class Accountfragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_accountfragment, container, false);
 
+
+
+
         profileImageView = view.findViewById(R.id.profileImageView);
         accountNickname = view.findViewById(R.id.accountNickname);
         profileImageView.setOnClickListener(v -> openGallery());
 ////////////////////////////////////////////////////////////////////
         // 닉네임 불러오기
         loadNickname();
+        loadAccountStatistics();  // ★ 추가된 부분 ★
 /////////////////////////////////////////////////////////////////////
         // LinearLayout 클릭 시 새로운 Activity로 이동하는 Intent 설정
         LinearLayout pwResetLayout = view.findViewById(R.id.pwReset);
@@ -95,6 +100,14 @@ public class Accountfragment extends Fragment {
 
         return view;
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Fragment가 다시 활성화될 때 통계 데이터 갱신
+        loadAccountStatistics();
+    }
+
+
 
     private void openGallery() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT); // ACTION_PICK 대신 ACTION_GET_CONTENT로 시도
@@ -309,6 +322,56 @@ public class Accountfragment extends Fragment {
             }
         });
     }
+    private void loadAccountStatistics() {
+        SharedPreferences prefs = requireActivity().getSharedPreferences("AppPrefs", Context.MODE_PRIVATE);
+        String sessionId = prefs.getString("sessionId", null);
+
+        if (sessionId != null) {
+            new Thread(() -> {
+                try {
+                    URL url = new URL("http://10.0.2.2:8888/kch_server/GetAccountStatistics?sessionId=" + sessionId);
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestMethod("GET");
+
+                    int responseCode = conn.getResponseCode();
+                    if (responseCode == HttpURLConnection.HTTP_OK) {
+                        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                        StringBuilder response = new StringBuilder();
+                        String line;
+                        while ((line = in.readLine()) != null) {
+                            response.append(line);
+                        }
+                        in.close();
+
+                        JSONObject jsonResponse = new JSONObject(response.toString());
+                        int favoriteCount = jsonResponse.getInt("favoriteCount");
+                        int postCount = jsonResponse.getInt("postCount");
+
+                        requireActivity().runOnUiThread(() -> {
+                            // UI 업데이트
+                            TextView favCountTextView = getView().findViewById(R.id.favCount);
+                            TextView postCountTextView = getView().findViewById(R.id.postCount);
+
+                            favCountTextView.setText(favoriteCount + " 회");
+                            postCountTextView.setText(postCount + " 회");
+                        });
+                    } else {
+                        requireActivity().runOnUiThread(() ->
+                                Toast.makeText(getContext(), "통계 정보를 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
+                        );
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    requireActivity().runOnUiThread(() ->
+                            Toast.makeText(getContext(), "서버 요청 중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show()
+                    );
+                }
+            }).start();
+        } else {
+            Toast.makeText(getContext(), "Session ID를 찾을 수 없습니다. 다시 로그인하세요.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
 
 
