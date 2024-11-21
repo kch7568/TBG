@@ -13,6 +13,24 @@
         android:theme="@style/Theme.TBG"
         tools:targetApi="31">
         <activity
+            android:name=".AirportBetweenArriveActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AirportBetweenStartActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AirportOnewayArriveActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AirportOnewayStartActivity"
+            android:exported="false" />
+        <activity
+            android:name=".BusBetweenArriveActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ItemSubwayArriveActivity"
+            android:exported="false" />
+        <activity
             android:name=".BusBetweenStartActivity"
             android:exported="false" />
         <activity
@@ -52,7 +70,7 @@
             android:name=".BusOnewayActivity"
             android:exported="false" />
         <activity
-            android:name=".TrainOnewayActivity"
+            android:name=".TrainOnewayStartActivity"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
@@ -67,7 +85,7 @@
             android:name=".Register2Activity"
             android:exported="false" />
         <activity
-            android:name=".TrainOnewayStartActivity"
+            android:name=".TrainOnewayActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

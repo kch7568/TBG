@@ -6,10 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F0EBFB"
-    tools:context=".TrainOnewayArriveActivity">
+    tools:context=".TrainOnewayStartActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/train_oneway_start_1"
+        android:id="@+id/train_oneway_arrive_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -34,118 +34,35 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:text="출발하실 장소를 검색해주세요"
+            android:text="방문하실 장소를 검색해주세요."
             android:textSize="8pt"
             android:textStyle="bold" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/train_oneway_start_2"
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="20dp"
+        android:layout_margin="8dp"
+        app:queryHint="지하철역을 검색해주세요."
+        android:inputType="text"
+        app:iconifiedByDefault="false"
+        android:background="@drawable/layout_background_train3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/train_oneway_start_1">
+        app:layout_constraintTop_toBottomOf="@+id/train_oneway_arrive_1">
 
-        <EditText
-            android:id="@+id/EditText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/layout_background_train3"
-            android:drawableRight="@drawable/calendar"
-            android:hint="   검색"
-            android:padding="8dp"
-            android:textColor="@color/black"
-            android:textColorHint="@color/black" />
+    </androidx.appcompat.widget.SearchView>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/EditText"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="10dp"
-            android:gravity="center"
-            android:text="이런 장소는 어떠신가요?"
-            android:textSize="10pt"
-            android:textStyle="bold" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/train_oneway_start_3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/train_oneway_start_4"
-        app:layout_constraintTop_toBottomOf="@+id/train_oneway_start_2">
-
-        <ImageView
-            android:id="@+id/seoul"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:background="#F0EBFB"
-            android:src="@drawable/s_station"
-            app:layout_constraintEnd_toStartOf="@+id/youngsan"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.43" />
-
-        <ImageView
-            android:id="@+id/youngsan"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/i_station"
-            android:background="#F0EBFB"
-            android:adjustViewBounds="true"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/seoul"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.43" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/train_oneway_start_4"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/train_oneway_start_3">
-
-        <ImageView
-            android:id="@+id/busan"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:background="#F0EBFB"
-            android:src="@drawable/c_station"
-            app:layout_constraintEnd_toStartOf="@+id/daejeon"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.45" />
-
-        <ImageView
-            android:id="@+id/daejeon"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:background="#F0EBFB"
-            android:src="@drawable/g_station"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/busan"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.45" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
+        app:layout_constraintTop_toBottomOf="@+id/searchView" />
 </androidx.constraintlayout.widget.ConstraintLayout>
+

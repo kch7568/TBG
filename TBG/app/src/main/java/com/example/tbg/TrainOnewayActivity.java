@@ -17,6 +17,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 
+import org.w3c.dom.Text;
+
 import java.util.Calendar;
 
 public class TrainOnewayActivity extends AppCompatActivity {
@@ -36,6 +38,11 @@ public class TrainOnewayActivity extends AppCompatActivity {
     private TextView selectedDateText;
     private Button selectDateButton;
 
+    private static final int REQUEST_CODE_START = 1; // 출발지 요청 코드
+    private static final int REQUEST_CODE_ARRIVE = 2; // 도착지 요청 코드
+
+    private TextView startTextView;
+    private TextView arriveTextView;
 
     @SuppressLint({"MissingInflatedId", "SetTextI18n", "WrongViewCast", "CutPasteId"})
     @Override
@@ -44,8 +51,28 @@ public class TrainOnewayActivity extends AppCompatActivity {
 
         setContentView(R.layout.train_oneway);
 
+        startTextView = findViewById(R.id.start_Place);
+        arriveTextView = findViewById(R.id.arrive_Place);
 
+        // 출발지를 설정하기 위한 클릭 이벤트
+        startTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // PracticeActivity를 실행하여 결과를 받음
+                Intent intent = new Intent(TrainOnewayActivity.this, TrainOnewayStartActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_START);
+            }
+        });
 
+        // 도착지를 설정하기 위한 클릭 이벤트
+        arriveTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // PracticeActivity를 실행하여 결과를 받음
+                Intent intent = new Intent(TrainOnewayActivity.this, TrainOnewayArriveActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_ARRIVE);
+            }
+        });
 
         train_oneway_count = findViewById(R.id.train_oneway_count);
         train_oneway_count.setText(count + "");
@@ -141,6 +168,23 @@ public class TrainOnewayActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK && data != null) {
+            String stationName = data.getStringExtra("stationName");
+
+            if (requestCode == REQUEST_CODE_START) {
+                // 출발지 데이터 설정
+                startTextView.setText("출발역 : " + stationName);
+            } else if (requestCode == REQUEST_CODE_ARRIVE) {
+                // 도착지 데이터 설정
+                arriveTextView.setText("도착역 : " + stationName);
+            }
+        }
     }
 }
 

@@ -14,10 +14,23 @@ public class SubwayAdapter extends RecyclerView.Adapter<SubwayAdapter.SubwayView
 
     private List<SubwayStation> subwayList;
     private List<SubwayStation> filteredList;
+    private OnItemClickListener onItemClickListener;
+
 
     public SubwayAdapter(List<SubwayStation> subwayList) {
         this.subwayList = subwayList;
         this.filteredList = new ArrayList<>(subwayList);  // 초기 필터 리스트는 전체 목록
+    }
+
+    public void setOnClickListener(View.OnClickListener stationName) {
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(String stationName);  // 클릭된 역 이름 전달
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
     }
 
     @Override
@@ -31,9 +44,19 @@ public class SubwayAdapter extends RecyclerView.Adapter<SubwayAdapter.SubwayView
     public void onBindViewHolder(SubwayViewHolder holder, int position) {
         SubwayStation station = filteredList.get(position);
         holder.stationName.setText(station.getName());
-
-        // 각 지하철역에 맞는 이미지 설정
         holder.stationIcon.setImageResource(station.getImageResId());  // 각 지하철역에 맞는 이미지를 설정
+
+        if (position == 0) {
+            holder.Line.setVisibility(View.GONE);
+        } else {
+            holder.Line.setVisibility(View.VISIBLE);
+        }
+
+        holder.itemView.setOnClickListener(view -> {
+            if(onItemClickListener != null){
+                onItemClickListener.onItemClick(station.getName());
+            }
+        });
     }
 
     @Override
@@ -58,13 +81,17 @@ public class SubwayAdapter extends RecyclerView.Adapter<SubwayAdapter.SubwayView
 
     // ViewHolder 클래스
     public static class SubwayViewHolder extends RecyclerView.ViewHolder {
+        public View Line;
         ImageView stationIcon;
         TextView stationName;
+
 
         public SubwayViewHolder(View itemView) {
             super(itemView);
             stationIcon = itemView.findViewById(R.id.imageViewIcon);  // 이미지 뷰
             stationName = itemView.findViewById(R.id.textViewStation);  // 텍스트 뷰
+            // 텍스트 뷰
+            Line = itemView.findViewById(R.id.Line);
         }
     }
 }

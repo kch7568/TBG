@@ -36,6 +36,12 @@ public class TrainBetweenActivity extends AppCompatActivity {
     private TextView selectedDateText2;
     private Button selectDateButton2;
 
+    private static final int REQUEST_CODE_START = 1; // 출발지 요청 코드
+    private static final int REQUEST_CODE_ARRIVE = 2; // 도착지 요청 코드
+
+    private TextView startTextView;
+    private TextView arriveTextView;
+
     @SuppressLint({"MissingInflatedId", "SetTextI18n", "CutPasteId"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +49,31 @@ public class TrainBetweenActivity extends AppCompatActivity {
 
         setContentView(R.layout.train_between);
 
+        startTextView = findViewById(R.id.start_Place2);
+        arriveTextView = findViewById(R.id.arrive_Place2);
+
+        // 출발지를 설정하기 위한 클릭 이벤트
+        startTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // PracticeActivity를 실행하여 결과를 받음
+                Intent intent = new Intent(TrainBetweenActivity.this, TrainBetweenStartActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_START);
+            }
+        });
+
+        // 도착지를 설정하기 위한 클릭 이벤트
+        arriveTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // PracticeActivity를 실행하여 결과를 받음
+                Intent intent = new Intent(TrainBetweenActivity.this, TrainBetweenArriveActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_ARRIVE);
+            }
+        });
+
         train_between_tv_count = findViewById(R.id.train_between_tv_count);
-        train_between_tv_count.setText(count+"");
+        train_between_tv_count.setText(count + "");
         train_between_addBtn = findViewById(R.id.train_between_addBtn);
         train_between_minusBtn = findViewById(R.id.train_between_minusBtn);
 
@@ -52,7 +81,7 @@ public class TrainBetweenActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 count++;
-                train_between_tv_count.setText(count+"");
+                train_between_tv_count.setText(count + "");
             }
         });
 
@@ -60,7 +89,7 @@ public class TrainBetweenActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 count--;
-                train_between_tv_count.setText(count+"");
+                train_between_tv_count.setText(count + "");
             }
         });
 
@@ -162,8 +191,21 @@ public class TrainBetweenActivity extends AppCompatActivity {
                 datePickerDialog.show();
             }
         });
+    }
+        @Override
+        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+            super.onActivityResult(requestCode, resultCode, data);
 
+            if (resultCode == RESULT_OK && data != null) {
+                String stationName2 = data.getStringExtra("stationName2");
 
-
+                if (requestCode == REQUEST_CODE_START) {
+                    // 출발지 데이터 설정
+                    startTextView.setText("출발역 : " + stationName2);
+                } else if (requestCode == REQUEST_CODE_ARRIVE) {
+                    // 도착지 데이터 설정
+                    arriveTextView.setText("도착역 : " + stationName2);
+                }
+            }
     }
 }

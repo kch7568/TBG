@@ -20,8 +20,6 @@ public class BusOnewayActivity extends AppCompatActivity {
 
     Button btn1;
 
-    Button bus_oneway_startDay;
-    Button bus_oneway_arriveDay;
 
     private Button bus_oneway_addBtn, bus_oneway_minusBtn;
     private TextView bus_oneway_count;
@@ -33,6 +31,12 @@ public class BusOnewayActivity extends AppCompatActivity {
     private TextView selectedDateText;
     private Button selectDateButton;
 
+    private static final int REQUEST_CODE_START = 1; // 출발지 요청 코드
+    private static final int REQUEST_CODE_ARRIVE = 2; // 도착지 요청 코드
+
+    private TextView startTextView3;
+    private TextView arriveTextView3;
+
     @SuppressLint({"MissingInflatedId", "SetTextI18n", "WrongViewCast", "CutPasteId"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,23 +45,30 @@ public class BusOnewayActivity extends AppCompatActivity {
 
         setContentView(R.layout.bus_oneway);
 
-        bus_oneway_startDay = findViewById(R.id.bus_oneway_startDay);
-        bus_oneway_startDay.setOnClickListener(new View.OnClickListener() {
+        startTextView3 = findViewById(R.id.start_bus);
+        arriveTextView3 = findViewById(R.id.arrive_bus);
+
+        // 출발지를 설정하기 위한 클릭 이벤트
+        startTextView3.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), BusOnewayStartActivity.class);
-                startActivity(intent);
+            public void onClick(View v) {
+                // PracticeActivity를 실행하여 결과를 받음
+                Intent intent = new Intent(BusOnewayActivity.this, BusOnewayStartActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_START);
             }
         });
 
-        bus_oneway_arriveDay = findViewById(R.id.bus_oneway_arriveDay);
-        bus_oneway_arriveDay.setOnClickListener(new View.OnClickListener() {
+        // 도착지를 설정하기 위한 클릭 이벤트
+        arriveTextView3.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), BusOnewayArriveActivity.class);
-                startActivity(intent);
+            public void onClick(View v) {
+                // PracticeActivity를 실행하여 결과를 받음
+                Intent intent = new Intent(BusOnewayActivity.this, BusOnewayArriveActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_ARRIVE);
             }
         });
+
+
 
         btn1 = findViewById(R.id.btn1);
         btn1.setOnClickListener(new View.OnClickListener() {
@@ -133,6 +144,21 @@ public class BusOnewayActivity extends AppCompatActivity {
                 datePickerDialog.show();
             }
         });
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        if (resultCode == RESULT_OK && data != null) {
+            String busName = data.getStringExtra("busName");
+
+            if (requestCode == REQUEST_CODE_START) {
+                // 출발지 데이터 설정
+                startTextView3.setText("출발역 : " + busName);
+            } else if (requestCode == REQUEST_CODE_ARRIVE) {
+                // 도착지 데이터 설정
+                arriveTextView3.setText("도착역 : " + busName);
+            }
+        }
     }
 }

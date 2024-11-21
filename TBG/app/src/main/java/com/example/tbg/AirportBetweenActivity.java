@@ -26,9 +26,6 @@ public class AirportBetweenActivity extends AppCompatActivity {
     private TextView airport_between_count;
     private int count = 0;
 
-    Button airport_between_startDay;
-    Button airport_between_arriveDay;
-
     Button airport_go_onewayBtn;
 
     ImageView go_trainBtn;
@@ -40,6 +37,12 @@ public class AirportBetweenActivity extends AppCompatActivity {
     private TextView selectedDateText2;
     private Button selectDateButton2;
 
+    private static final int REQUEST_CODE_START = 1; // 출발지 요청 코드
+    private static final int REQUEST_CODE_ARRIVE = 2; // 도착지 요청 코드
+
+    private TextView startTextView4;
+    private TextView arriveTextView4;
+
 
     @SuppressLint({"MissingInflatedId", "SetTextI18n", "WrongViewCast", "CutPasteId"})
     @Override
@@ -48,6 +51,29 @@ public class AirportBetweenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.airport_between);
+
+        startTextView4 = findViewById(R.id.start_airport);
+        arriveTextView4 = findViewById(R.id.arrive_airport);
+
+        // 출발지를 설정하기 위한 클릭 이벤트
+        startTextView4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // PracticeActivity를 실행하여 결과를 받음
+                Intent intent = new Intent(AirportBetweenActivity.this, AirportBetweenStartActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_START);
+            }
+        });
+
+        // 도착지를 설정하기 위한 클릭 이벤트
+        arriveTextView4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // PracticeActivity를 실행하여 결과를 받음
+                Intent intent = new Intent(AirportBetweenActivity.this, AirportBetweenArriveActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_ARRIVE);
+            }
+        });
 
         airport_between_count = findViewById(R.id.airport_between_count);
         airport_between_count.setText(count + "");
@@ -70,23 +96,6 @@ public class AirportBetweenActivity extends AppCompatActivity {
             }
         });
 
-        airport_between_startDay = findViewById(R.id.airport_between_startDay);
-        airport_between_startDay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        airport_between_arriveDay = findViewById(R.id.airport_between_arriveDay);
-        airport_between_arriveDay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(intent);
-            }
-        });
 
         airport_go_onewayBtn = findViewById(R.id.airport_go_onewayBtn);
         airport_go_onewayBtn.setOnClickListener(new View.OnClickListener() {
@@ -168,5 +177,21 @@ public class AirportBetweenActivity extends AppCompatActivity {
                 datePickerDialog.show();
             }
         });
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK && data != null) {
+            String airportName = data.getStringExtra("airportName");
+
+            if (requestCode == REQUEST_CODE_START) {
+                // 출발지 데이터 설정
+                startTextView4.setText("출발역 : " + airportName);
+            } else if (requestCode == REQUEST_CODE_ARRIVE) {
+                // 도착지 데이터 설정
+                arriveTextView4.setText("도착역 : " + airportName);
+            }
+        }
     }
 }

@@ -24,8 +24,6 @@ public class AirportOnewayActivity extends AppCompatActivity {
 
     Button btn1;
 
-    Button airport_oneway_startDay;
-    Button airport_oneway_arriveDay;
 
     private Button airport_oneway_addBtn, airport_oneway_minusBtn;
     private TextView airport_oneway_count;
@@ -37,6 +35,12 @@ public class AirportOnewayActivity extends AppCompatActivity {
     private TextView selectedDateText;
     private Button selectDateButton;
 
+    private static final int REQUEST_CODE_START = 1; // 출발지 요청 코드
+    private static final int REQUEST_CODE_ARRIVE = 2; // 도착지 요청 코드
+
+    private TextView startTextView4;
+    private TextView arriveTextView4;
+
     @SuppressLint({"MissingInflatedId", "SetTextI18n", "WrongViewCast", "CutPasteId"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,29 @@ public class AirportOnewayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.airport_oneway);
+
+        startTextView4 = findViewById(R.id.start_airport);
+        arriveTextView4 = findViewById(R.id.arrive_airport);
+
+        // 출발지를 설정하기 위한 클릭 이벤트
+        startTextView4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // PracticeActivity를 실행하여 결과를 받음
+                Intent intent = new Intent(AirportOnewayActivity.this, AirportOnewayStartActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_START);
+            }
+        });
+
+        // 도착지를 설정하기 위한 클릭 이벤트
+        arriveTextView4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // PracticeActivity를 실행하여 결과를 받음
+                Intent intent = new Intent(AirportOnewayActivity.this, AirportOnewayArriveActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_ARRIVE);
+            }
+        });
 
         btn1 = findViewById(R.id.btn1);
         btn1.setOnClickListener(new View.OnClickListener() {
@@ -75,23 +102,6 @@ public class AirportOnewayActivity extends AppCompatActivity {
             }
         });
 
-        airport_oneway_startDay = findViewById(R.id.airport_oneway_startDay);
-        airport_oneway_startDay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        airport_oneway_arriveDay = findViewById(R.id.airport_oneway_arriveDay);
-        airport_oneway_arriveDay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(intent);
-            }
-        });
 
         go_busBtn = findViewById(R.id.go_busBtn);
         go_busBtn.setOnClickListener(new View.OnClickListener() {
@@ -137,5 +147,21 @@ public class AirportOnewayActivity extends AppCompatActivity {
                 datePickerDialog.show();
             }
         });
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK && data != null) {
+            String airportName = data.getStringExtra("airportName");
+
+            if (requestCode == REQUEST_CODE_START) {
+                // 출발지 데이터 설정
+                startTextView4.setText("출발역 : " + airportName);
+            } else if (requestCode == REQUEST_CODE_ARRIVE) {
+                // 도착지 데이터 설정
+                arriveTextView4.setText("도착역 : " + airportName);
+            }
+        }
     }
 }
