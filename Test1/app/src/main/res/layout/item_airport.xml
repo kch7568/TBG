@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/tv_airport_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Airport Name"
+        android:textSize="16sp"
+        android:layout_marginBottom="8dp" />  <!-- 항공사 이름 -->
+
+    <TextView
+        android:id="@+id/tv_city"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="City"
+        android:textSize="14sp"
+        android:layout_marginBottom="8dp" />  <!-- 도시 -->
+
+    <TextView
+        android:id="@+id/tv_airport_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Airport Code"
+        android:textSize="12sp" />  <!-- 공항 코드 -->
+</LinearLayout>
