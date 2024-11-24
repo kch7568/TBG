@@ -5,6 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
 
+
     private static Retrofit retrofit = null;
 
     public static Retrofit getWeatherClient() {
@@ -29,5 +30,12 @@ public class RetrofitClient {
                     .build();
         }
         return retrofit;
+    }
+    // 게시글 데이터를 위한 Retrofit 클라이언트 생성
+    public static Retrofit getPostClient() {
+        return new Retrofit.Builder()
+                .baseUrl("http://10.0.2.2:8888/kch_server/") // 서버의 URL
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
     }
 }

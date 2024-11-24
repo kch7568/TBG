@@ -89,11 +89,25 @@ public class Accountfragment extends Fragment {
 
         // LinearLayout 클릭 시 새로운 Activity로 이동하는 Intent 설정
         LinearLayout suportLayout = view.findViewById(R.id.support);
-        suportLayout.setOnClickListener(v -> {  // 여기를 SupportActivity로 수정
+        suportLayout.setOnClickListener(v -> {  // 여기를  suportLayout로 수정
             Intent intent = new Intent(getActivity(), SupportActivity.class);
             startActivity(intent);
         });
 
+        // LinearLayout 클릭 시 새로운 Activity로 이동하는 Intent 설정
+        LinearLayout favoritesLayout = view.findViewById(R.id.favorites);
+        favoritesLayout.setOnClickListener(v -> {  // 여기를 favoritesLayout로 수정
+            Intent intent = new Intent(getActivity(), FavoritesActivity.class);
+            startActivity(intent);
+        });
+
+        // LinearLayout 클릭 시 새로운 Activity로 이동하는 Intent 설정
+        LinearLayout myPostLayout = view.findViewById(R.id.myPost);
+        myPostLayout.setOnClickListener(v -> {  // 여기를 favoritesLayout로 수정
+            Intent intent = new Intent(getActivity(), MyPostsActivity.class);
+            startActivity(intent);
+        });
+/////////////////////////////////////////////////////////////////////////////////
 
         // 앱 시작 시 프로필 이미지 로드
         loadProfileImage();  // ★ 수정된 부분: 앱을 시작할 때 서버에서 프로필 이미지를 불러옵니다.
@@ -115,7 +129,7 @@ public class Accountfragment extends Fragment {
         selectImageLauncher.launch(intent);
     }
 
-//닉네임 뿌려주기 ( HomeActivity 코드랑 똑같음)
+    //닉네임 뿌려주기 ( HomeActivity 코드랑 똑같음)
     private void loadNickname() {
         SharedPreferences prefs = requireActivity().getSharedPreferences("AppPrefs", getContext().MODE_PRIVATE);
         String sessionId = prefs.getString("sessionId", null);

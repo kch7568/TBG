@@ -70,7 +70,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
         // 프로필 이미지 로드
         Glide.with(context).load(profileImageUrl).into(holder.profileImageView);
 
-        // 동영상 또는 이미지 썸네일 표시
+        // 동영상, GIF, 또는 이미지 썸네일 표시
         if (!postVideoUrl.isEmpty()) { // 동영상 파일일 경우
             try {
                 Bitmap thumbnail = getVideoThumbnail(postVideoUrl);
@@ -83,7 +83,13 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
                 e.printStackTrace();
                 holder.postImageView.setImageResource(R.drawable.tbg_icon); // 예외 발생 시 기본 이미지 설정
             }
-        } else if (!postImageUrl.isEmpty()) { // 이미지 파일일 경우
+        } else if (postImageUrl.endsWith(".gif")) { // GIF 파일일 경우
+            Glide.with(context)
+                    .asBitmap() // GIF의 첫 프레임만 로드
+                    .load(postImageUrl)
+                    .into(holder.postImageView);
+
+        } else if (!postImageUrl.isEmpty()) { // 일반 이미지 파일일 경우
             Glide.with(context).load(postImageUrl).into(holder.postImageView);
         } else {
             holder.postImageView.setImageResource(R.drawable.tbg_icon); // 이미지나 동영상이 없을 경우 기본 이미지 설정
@@ -95,6 +101,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.PostViewHold
             }
         });
     }
+
 
 
 

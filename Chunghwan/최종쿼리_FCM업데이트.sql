@@ -35,6 +35,7 @@ CREATE TABLE Alert (
     Alert_Num INT UNSIGNED AUTO_INCREMENT NOT NULL,
     User_Id VARCHAR(20) NOT NULL,
     Alert_Status BOOLEAN NOT NULL DEFAULT TRUE,
+    fcm_token VARCHAR(255) NULL,                      -- FCM 토큰, NULL 허용
     PRIMARY KEY (Alert_Num),
     FOREIGN KEY (User_Id) REFERENCES User(User_Id) ON DELETE CASCADE
 );
@@ -57,7 +58,7 @@ CREATE TABLE Comment (
     Post_Num INT UNSIGNED NOT NULL,
     User_Id VARCHAR(20) NOT NULL,
     PRIMARY KEY (Comment_Id),
-    FOREIGN KEY (Post_Num) REFERENCES Post(Post_Num) ON DELETE CASCADE,   -- 수정
+    FOREIGN KEY (Post_Num) REFERENCES Post(Post_Num) ON DELETE CASCADE   -- 수정
     FOREIGN KEY (User_Id) REFERENCES User(User_Id) ON DELETE CASCADE
 );
 
@@ -109,7 +110,7 @@ CREATE TABLE MyProfile (
 
 -- User_Id 참조하는 모든 외래키에 Cascade 설정(삭제하면 다지워지게)
  -- Favorites 구조 수정(한 게시글당 즐겨찾기 중복 방지)
-
+ -- Alert에 댓글알림용 토큰 저장.
 
 INSERT INTO Category (Category_Code, Category_Name) VALUES
 ('A', '관광명소'),

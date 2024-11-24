@@ -266,24 +266,27 @@ public class DAO_User extends BaseDAO {
 	/**
 	 * MIME 타입에 따라 파일 확장자를 결정하는 메소드
 	 */
-	private String determineFileExtension(String mimeType) {
-	    switch (mimeType) {
-	        case "image/jpeg":
-	            return "jpg";
-	        case "image/png":
-	            return "png";
-	        case "image/gif":
-	            return "gif";
-	        case "video/mp4":
-	            return "mp4";
-	        case "video/avi":
-	            return "avi";
-	        case "video/mkv":
-	            return "mkv";
-	        default:
-	            return null; // 지원되지 않는 파일 유형
-	    }
-	}
+    private String determineFileExtension(String mimeType) {
+        switch (mimeType) {
+            case "image/jpeg":
+                return "jpg";
+            case "image/png":
+                return "png";
+            case "image/gif":
+                return "gif";
+            case "image/webp": // **추가**
+                return "webp";
+            case "video/mp4":
+                return "mp4";
+            case "video/avi":
+                return "avi";
+            case "video/mkv":
+                return "mkv";
+            default:
+                return null; // 지원되지 않는 파일 유형
+        }
+    }
+
 	
 	
 
@@ -315,12 +318,16 @@ public class DAO_User extends BaseDAO {
 	            String postImageUrl = null;
 	            String postVideoUrl = null;
 	            if (fileExtension != null) {
-	                if (fileExtension.equalsIgnoreCase("jpg") || fileExtension.equalsIgnoreCase("png")) {
+	                if (fileExtension.equalsIgnoreCase("jpg") || 
+	                    fileExtension.equalsIgnoreCase("png") || 
+	                    fileExtension.equalsIgnoreCase("gif") || 
+	                    fileExtension.equalsIgnoreCase("webp")) { // **gif와 webp 추가**
 	                    postImageUrl = filePath;
 	                } else if (fileExtension.equalsIgnoreCase("mp4") || fileExtension.equalsIgnoreCase("avi")) {
 	                    postVideoUrl = filePath;
 	                }
 	            }
+
 
 	            PostItem post = new PostItem(postId, title, nickname, createDate, content, postImageUrl, postVideoUrl, profileImageUrl, views, likes, nickname);
 	            postList.add(post);
@@ -364,12 +371,16 @@ public class DAO_User extends BaseDAO {
 	            String postImageUrl = null;
 	            String postVideoUrl = null;
 	            if (fileExtension != null) {
-	                if (fileExtension.equalsIgnoreCase("jpg") || fileExtension.equalsIgnoreCase("png")) {
+	                if (fileExtension.equalsIgnoreCase("jpg") || 
+	                    fileExtension.equalsIgnoreCase("png") || 
+	                    fileExtension.equalsIgnoreCase("gif") || 
+	                    fileExtension.equalsIgnoreCase("webp")) { // **gif와 webp 추가**
 	                    postImageUrl = filePath;
 	                } else if (fileExtension.equalsIgnoreCase("mp4") || fileExtension.equalsIgnoreCase("avi")) {
 	                    postVideoUrl = filePath;
 	                }
 	            }
+
 
 	            PostItem post = new PostItem(postId, title, nickname, createDate, content, postImageUrl, postVideoUrl, profileImageUrl, views, likes, nickname);
 	            postList.add(post);
@@ -397,6 +408,7 @@ public class DAO_User extends BaseDAO {
 	        ResultSet rs = pstmt.executeQuery();
 
 	        if (rs.next()) {
+	        	
 	            int postIdInt = rs.getInt("Post_Num");
 	            String title = rs.getString("Post_Title");
 	            String nickname = rs.getString("nickname");
@@ -407,17 +419,26 @@ public class DAO_User extends BaseDAO {
 	            String profileImageUrl = rs.getString("profileImageUrl");
 	            int views = rs.getInt("Post_hits");
 	            int likes = rs.getInt("Post_Heart");
+	            
+	            System.out.println("File Path: " + attachmentUrl);
+	            System.out.println("File Extension: " + fileExtension);
+
 
 	            // 파일 확장자에 따라 이미지 또는 동영상 URL 설정
 	            String postImageUrl = null;
 	            String postVideoUrl = null;
 	            if (fileExtension != null) {
-	                if (fileExtension.equalsIgnoreCase("jpg") || fileExtension.equalsIgnoreCase("png")) {
-	                    postImageUrl = attachmentUrl;
-	                } else if (fileExtension.equalsIgnoreCase("mp4") || fileExtension.equalsIgnoreCase("avi")) {
+	                if (fileExtension.equalsIgnoreCase("jpg") || 
+	                    fileExtension.equalsIgnoreCase("png") || 
+	                    fileExtension.equalsIgnoreCase("gif") || 
+	                	fileExtension.equalsIgnoreCase("webp")){ // **GIF 추가**
+	                    postImageUrl = attachmentUrl; // GIF도 이미지로 처리
+	                } else if (fileExtension.equalsIgnoreCase("mp4") || 
+	                           fileExtension.equalsIgnoreCase("avi")) {
 	                    postVideoUrl = attachmentUrl;
 	                }
 	            }
+
 
 	            return new PostItem(postIdInt, title, nickname, createDate, content, postImageUrl, postVideoUrl, profileImageUrl, views, likes, nickname);
 	        }
@@ -459,12 +480,17 @@ public class DAO_User extends BaseDAO {
 	            String postImageUrl = null;
 	            String postVideoUrl = null;
 	            if (fileExtension != null) {
-	                if (fileExtension.equalsIgnoreCase("jpg") || fileExtension.equalsIgnoreCase("png")) {
-	                    postImageUrl = filePath;
-	                } else if (fileExtension.equalsIgnoreCase("mp4") || fileExtension.equalsIgnoreCase("avi")) {
-	                    postVideoUrl = filePath;
+	                if (fileExtension.equalsIgnoreCase("jpg") || 
+	                    fileExtension.equalsIgnoreCase("png") || 
+	                    fileExtension.equalsIgnoreCase("gif") || 
+	                    fileExtension.equalsIgnoreCase("webp")) { // gif와 webp 처리
+	                    postImageUrl = filePath; // 이미지 URL 설정
+	                } else if (fileExtension.equalsIgnoreCase("mp4") || 
+	                           fileExtension.equalsIgnoreCase("avi")) {
+	                    postVideoUrl = filePath; // 동영상 URL 설정
 	                }
 	            }
+
 
 	            PostItem post = new PostItem(postId, title, nickname, createDate, content, postImageUrl, postVideoUrl, profileImageUrl, views, likes, nickname);
 	            postList.add(post);
@@ -802,7 +828,318 @@ public class DAO_User extends BaseDAO {
             return rs.next(); // 결과가 있으면 true 반환
         }
     }
+    public boolean saveFcmToken(String userId, String fcmToken) {
+        String selectSql = "SELECT 1 FROM Alert WHERE User_Id = ?";
+        String insertSql = "INSERT INTO Alert (User_Id, Alert_Status, fcm_token) VALUES (?, TRUE, ?)";
+        String updateSql = "UPDATE Alert SET fcm_token = ? WHERE User_Id = ?";
+        
+        try (PreparedStatement selectStmt = conn.prepareStatement(selectSql)) {
+            selectStmt.setString(1, userId);
+            ResultSet rs = selectStmt.executeQuery();
+
+            if (rs.next()) {
+                // User_Id가 존재할 경우, UPDATE 실행
+                try (PreparedStatement updateStmt = conn.prepareStatement(updateSql)) {
+                    updateStmt.setString(1, fcmToken);
+                    updateStmt.setString(2, userId);
+                    return updateStmt.executeUpdate() > 0;
+                }
+            } else {
+                // User_Id가 없을 경우, INSERT 실행
+                try (PreparedStatement insertStmt = conn.prepareStatement(insertSql)) {
+                    insertStmt.setString(1, userId);
+                    insertStmt.setString(2, fcmToken);
+                    return insertStmt.executeUpdate() > 0;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public String getFcmToken(String userId) {
+        String sql = "SELECT fcm_token FROM Alert WHERE User_Id = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, userId);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("fcm_token");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // 토큰이 없거나 오류가 발생한 경우
+    }
+
+
+    public List<String> getAllFcmTokensExcept(String userId) {
+        List<String> fcmTokens = new ArrayList<>();
+        String sql = "SELECT fcm_token FROM Alert WHERE User_Id != ? AND fcm_token IS NOT NULL";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, userId);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                fcmTokens.add(rs.getString("fcm_token"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return fcmTokens;
+    }
+
+
+    public String getUserByPostId(String postId) {
+        String sql = "SELECT User_Id FROM Post WHERE Post_Num = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, postId);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getString("User_Id"); // 작성자 ID 반환
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // 작성자를 찾을 수 없는 경우 null 반환
+    }
+
+ // FCM 토큰 삭제 메서드
+    public boolean removeFcmToken(String fcmToken) {
+        String sql = "UPDATE Alert SET fcm_token = NULL WHERE fcm_token = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, fcmToken);
+            int rowsUpdated = pstmt.executeUpdate();
+            return rowsUpdated > 0; // 업데이트된 행이 1개 이상이면 성공
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // 오류 발생 시 false 반환
+        }
+    }
+    
+    
+    
+    
+    
+    
+    public List<PostItem> getTopPostsByLikes(int limit) {
+        List<PostItem> postList = new ArrayList<>();
+        String sql = "SELECT p.Post_Num, p.Post_Title, p.Post_Content, u.Nickname AS nickname, p.Post_createDay, " +
+                     "p.Post_hits AS views, p.Post_Heart AS likes, " +
+                     "mp.My_postURL AS profileImageUrl, " +
+                     "f.File_Path AS filePath, f.File_extension AS fileExtension " +
+                     "FROM Post p " +
+                     "LEFT JOIN User u ON p.User_Id = u.User_Id " +
+                     "LEFT JOIN MyProfile mp ON p.User_Id = mp.User_Id " +
+                     "LEFT JOIN File f ON p.Post_Num = f.Post_Num " +
+                     "ORDER BY p.Post_Heart DESC " + // 좋아요 순 정렬
+                     "LIMIT ?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setInt(1, limit); // limit 값 설정
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                int postId = rs.getInt("Post_Num");
+                String title = rs.getString("Post_Title");
+                String content = rs.getString("Post_Content");
+                String nickname = rs.getString("nickname");
+                String createDate = rs.getString("Post_createDay");
+                int views = rs.getInt("views");
+                int likes = rs.getInt("likes");
+                String profileImageUrl = rs.getString("profileImageUrl");
+
+                // 첨부파일의 URL 설정
+                String filePath = rs.getString("filePath");
+                String fileExtension = rs.getString("fileExtension");
+                String postImageUrl = null;
+                String postVideoUrl = null;
+
+                // 파일 확장자에 따라 이미지/동영상 URL 구분
+                if (fileExtension != null) {
+                    if (fileExtension.equalsIgnoreCase("jpg") || 
+                        fileExtension.equalsIgnoreCase("png") || 
+                        fileExtension.equalsIgnoreCase("gif") || 
+                        fileExtension.equalsIgnoreCase("webp")) { // **gif와 webp 추가**
+                        postImageUrl = filePath; // 이미지 URL 처리
+                    } else if (fileExtension.equalsIgnoreCase("mp4") || fileExtension.equalsIgnoreCase("avi")) {
+                        postVideoUrl = filePath; // 동영상 URL 처리
+                    }
+                }
+
+
+                // PostItem 객체 생성
+                PostItem post = new PostItem(
+                    postId, title, nickname, createDate, content,
+                    postImageUrl, postVideoUrl, profileImageUrl, views, likes, nickname
+                );
+
+                postList.add(post);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return postList;
+    }
+
+
+    public List<PostItem> getFavoritePosts(String userId) {
+        List<PostItem> favoritePosts = new ArrayList<>();
+        String sql = "SELECT p.Post_Num, p.Post_Title, p.Post_Content, u.Nickname AS nickname, p.Post_createDay, " +
+                     "p.Post_hits AS views, p.Post_Heart AS likes, mp.My_postURL AS profileImageUrl, " +
+                     "f.File_Path AS filePath, f.File_extension AS fileExtension " +
+                     "FROM Favorites fav " +
+                     "JOIN Post p ON fav.Post_Num = p.Post_Num " +
+                     "LEFT JOIN User u ON p.User_Id = u.User_Id " +
+                     "LEFT JOIN MyProfile mp ON p.User_Id = mp.User_Id " +
+                     "LEFT JOIN File f ON p.Post_Num = f.Post_Num " +
+                     "WHERE fav.User_Id = ? " +
+                     "ORDER BY p.Post_createDay DESC";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, userId);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                int postId = rs.getInt("Post_Num");
+                String title = rs.getString("Post_Title");
+                String content = rs.getString("Post_Content");
+                String nickname = rs.getString("nickname");
+                String createDate = rs.getString("Post_createDay");
+                int views = rs.getInt("views");
+                int likes = rs.getInt("likes");
+                String profileImageUrl = rs.getString("profileImageUrl");
+
+                // 첨부 파일의 URL 설정
+                String filePath = rs.getString("filePath");
+                String fileExtension = rs.getString("fileExtension");
+                String postImageUrl = null;
+                String postVideoUrl = null;
+                if (fileExtension != null) {
+                    if (fileExtension.equalsIgnoreCase("jpg") || 
+                        fileExtension.equalsIgnoreCase("png") || 
+                        fileExtension.equalsIgnoreCase("gif") || 
+                        fileExtension.equalsIgnoreCase("webp")) { // gif와 webp 처리
+                        postImageUrl = filePath; // 이미지 URL 설정
+                    } else if (fileExtension.equalsIgnoreCase("mp4") || 
+                               fileExtension.equalsIgnoreCase("avi")) {
+                        postVideoUrl = filePath; // 동영상 URL 설정
+                    }
+                }
+
+
+                PostItem post = new PostItem(postId, title, nickname, createDate, content,
+                                             postImageUrl, postVideoUrl, profileImageUrl, views, likes, nickname);
+                favoritePosts.add(post);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return favoritePosts;
+    }
+   
+    public List<PostItem> getAllPostsByUser(String userId) {
+        List<PostItem> postList = new ArrayList<>();
+        String sql = "SELECT p.Post_Num, p.Post_Title, p.Post_Content, p.Post_createDay, " +
+                     "p.Post_hits, p.Post_Heart, u.Nickname, mp.My_postURL AS profileImageUrl, " +
+                     "f.File_Path AS filePath, f.File_extension AS fileExtension " +
+                     "FROM Post p " +
+                     "LEFT JOIN User u ON p.User_Id = u.User_Id " +
+                     "LEFT JOIN MyProfile mp ON p.User_Id = mp.User_Id " +
+                     "LEFT JOIN File f ON p.Post_Num = f.Post_Num " + // File 테이블과 조인
+                     "WHERE p.User_Id = ? " +
+                     "ORDER BY p.Post_createDay DESC";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, userId);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                int postId = rs.getInt("Post_Num");
+                String title = rs.getString("Post_Title");
+                String content = rs.getString("Post_Content");
+                String createDate = rs.getString("Post_createDay");
+                int views = rs.getInt("Post_hits");
+                int likes = rs.getInt("Post_Heart");
+                String nickname = rs.getString("Nickname");
+                String profileImageUrl = rs.getString("profileImageUrl");
+
+                // 파일 URL 생성
+                String filePath = rs.getString("filePath");
+                String fileExtension = rs.getString("fileExtension");
+                String postImageUrl = null;
+                String postVideoUrl = null;
+
+                if (fileExtension != null) {
+                    if (fileExtension.equalsIgnoreCase("jpg") || 
+                        fileExtension.equalsIgnoreCase("png") || 
+                        fileExtension.equalsIgnoreCase("gif") || 
+                        fileExtension.equalsIgnoreCase("webp")) { // **gif와 webp 추가**
+                        postImageUrl = filePath; // 이미지 URL 처리
+                    } else if (fileExtension.equalsIgnoreCase("mp4") || fileExtension.equalsIgnoreCase("avi")) {
+                        postVideoUrl = filePath; // 동영상 URL 처리
+                    }
+                }
+
+
+                PostItem post = new PostItem(
+                    postId,
+                    title,
+                    nickname,
+                    createDate,
+                    content,
+                    postImageUrl,
+                    postVideoUrl,
+                    profileImageUrl,
+                    views,
+                    likes,
+                    nickname
+                );
+                postList.add(post);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return postList;
+    }
+
+
+    public List<Comment> getAllCommentsByUserWithPostTitle(String userId) throws SQLException {
+        String query = 
+            "SELECT c.Comment_Id, c.Comment_Contents AS content, c.Comment_Date AS createDate, " +
+            "c.Post_Num AS postId, p.Post_Title AS relatedPostTitle " +
+            "FROM Comment c " +
+            "JOIN Post p ON c.Post_Num = p.Post_Num " +
+            "WHERE c.User_Id = ?";
+
+        List<Comment> comments = new ArrayList<>();
+        try (PreparedStatement stmt = conn.prepareStatement(query)) { // conn 객체 사용
+            stmt.setString(1, userId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Comment comment = new Comment(
+                        rs.getString("relatedPostTitle"), // 게시글 제목
+                        rs.getString("content"),          // 댓글 내용
+                        rs.getString("createDate"),       // 작성일자
+                        null,                             // 프로필 이미지 URL (필요 없으면 null)
+                        rs.getString("postId"),           // 게시글 ID
+                        rs.getString("Comment_Id")        // 댓글 ID
+                    );
+                    comments.add(comment);
+                }
+            }
+        }
+        return comments;
+    }
+
+
+
+
+
+
+}
 
 
     
-}

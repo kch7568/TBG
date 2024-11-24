@@ -161,6 +161,8 @@ public class UpdatePostServlet extends HttpServlet {
                 return "png";
             case "image/gif":
                 return "gif";
+            case "image/webp":
+            	return "webp";
             case "video/mp4":
                 return "mp4";
             default:

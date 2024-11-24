@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="6dp"
+    android:background="#FFFFFF">
+
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="horizontal"
+android:padding="12dp"> <!-- 아이템 내부 여백 -->
+
+<!-- 게시글 이미지 -->
+<ImageView
+    android:id="@+id/postImage"
+    android:layout_width="80dp"
+    android:layout_height="80dp"
+    android:src="@drawable/tbg_icon"
+    android:scaleType="centerCrop"
+    android:layout_marginEnd="8dp" />
+
+<!-- 게시글 내용 -->
+<LinearLayout
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:orientation="vertical">
+
+    <!-- 게시글 제목 -->
+    <TextView
+        android:id="@+id/postTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="게시글 제목"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#000000" />
+
+    <!-- 게시글 작성일 -->
+    <TextView
+        android:id="@+id/postCreateDay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="작성일자"
+        android:textSize="14sp"
+        android:textColor="#757575"
+        android:layout_marginTop="4dp" />
+
+    <!-- 조회수와 좋아요 -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="4dp">
+
+        <TextView
+            android:id="@+id/postViews"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="조회수: 0"
+            android:textSize="14sp"
+            android:textColor="#757575" />
+
+        <TextView
+            android:id="@+id/postLikes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="좋아요: 0"
+            android:textSize="14sp"
+            android:textColor="#757575"
+            android:layout_marginStart="16dp" />
+    </LinearLayout>
+</LinearLayout>
+
+<!-- 삭제 버튼 -->
+<ImageButton
+    android:id="@+id/deletePostButton"
+    android:layout_width="40dp"
+    android:layout_height="40dp"
+    android:src="@drawable/ic_delete"
+    android:background="?attr/selectableItemBackgroundBorderless"
+    android:contentDescription="게시글 삭제 버튼" />
+</LinearLayout>
+
+    </androidx.cardview.widget.CardView>

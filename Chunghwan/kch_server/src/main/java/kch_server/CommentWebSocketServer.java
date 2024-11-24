@@ -5,11 +5,23 @@ import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session; // 웹소켓용 세션
 import javax.websocket.server.ServerEndpoint;
+
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import org.json.JSONObject;
+
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.Message;
+import com.google.firebase.messaging.Notification;
 
 import kch_DAO.DAO_User;
 import kch_java.SessionManager; // 사용자 세션 관리 매니저
@@ -38,9 +50,9 @@ public class CommentWebSocketServer {
             String content = receivedJson.getString("content");
             String sessionId = receivedJson.getString("sessionId");
 
-            // 세션 ID로 닉네임과 프로필 이미지 가져오기
+            // 세션에서 사용자 정보 가져오기
             String nickname = "익명";
-            String profileImageUrl = ""; // 기본값 설정
+            String profileImageUrl = "";
             SessionManager sessionManager = SessionManager.getInstance();
             kch_java.Session userSession = sessionManager.getSession(sessionId);
             String userId = null;
@@ -48,24 +60,28 @@ public class CommentWebSocketServer {
             if (userSession != null) {
                 nickname = userSession.getNickname();
                 userId = userSession.getUserId();
-
-                // DB에서 프로필 이미지 URL 가져오기
                 DAO_User daoUser = new DAO_User();
-                profileImageUrl = daoUser.getProfileImageUrl(userId); // getProfileImageUrl 메소드가 userId로 URL을 반환해야 함
+                profileImageUrl = daoUser.getProfileImageUrl(userId);
             }
 
-            // 댓글을 DB에 저장하고 생성된 댓글 ID 가져오기
+            // 댓글 저장 및 ID 가져오기
             DAO_User daoUser = new DAO_User();
             String commentId = daoUser.saveComment(postNum, userId, content);
 
-            // 클라이언트에게 댓글 전송
+            // 댓글 작성자 제외한 모든 사용자에게 FCM 알림
+            List<String> fcmTokens = daoUser.getAllFcmTokensExcept(userId);
+            for (String token : fcmTokens) {
+                sendFcmNotification(token, "새 댓글 알림", nickname + "님의 새 댓글이 등록되었습니다.");
+            }
+
+            // 클라이언트에게 댓글 데이터 전송
             JSONObject commentJson = new JSONObject();
             commentJson.put("author", nickname);
             commentJson.put("content", content);
             commentJson.put("date", "방금 전");
             commentJson.put("profileImageUrl", profileImageUrl);
-            commentJson.put("authorId", userId); // 작성자 ID 추가
-            commentJson.put("commentId", commentId); // 댓글 ID 추가 (DB에 저장하면서 생성된 ID를 가져옴)
+            commentJson.put("authorId", userId);
+            commentJson.put("commentId", commentId);
 
             synchronized (clients) {
                 for (Session client : clients) {
@@ -76,4 +92,28 @@ public class CommentWebSocketServer {
             e.printStackTrace();
         }
     }
+
+    private void sendFcmNotification(String token, String title, String body) {
+        try {
+            // Firebase 알림 구성
+            Message message = Message.builder()
+                    .setToken(token)
+                    .setNotification(Notification.builder()
+                            .setTitle(title)
+                            .setBody(body)
+                            .build())
+                    .build();
+
+            // Firebase 메시지 전송
+            String response = FirebaseMessaging.getInstance().send(message);
+            System.out.println("FCM 메시지 전송 성공: " + response);
+        } catch (Exception e) {
+            System.out.println("FCM 알림 전송 실패: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+
+
+    
 }

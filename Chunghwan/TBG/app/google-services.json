@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "795417926786",
+    "project_id": "tbg-sns",
+    "storage_bucket": "tbg-sns.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:795417926786:android:b0c2ee314de215337be89b",
+        "android_client_info": {
+          "package_name": "com.cookandroid.tbg"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGnwH_RuDVR8vPdfC2IGSgWrA4S3mJrJE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

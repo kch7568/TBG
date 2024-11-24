@@ -325,6 +325,10 @@ public class PostDetailActivity extends AppCompatActivity {
                     String updatedImageUrl = data.getStringExtra("postImageUrl");
                     String updatedVideoUrl = data.getStringExtra("postVideoUrl");
 
+                    Log.d("PostDetailActivity", "Updated Image URL: " + updatedImageUrl);
+                    Log.d("PostDetailActivity", "Updated Video URL: " + updatedVideoUrl);
+
+
                     // 최신 데이터를 멤버 변수에 반영
                     if (updatedTitle != null) title = updatedTitle;
                     if (updatedContent != null) content = updatedContent;
@@ -347,6 +351,7 @@ public class PostDetailActivity extends AppCompatActivity {
             initWebSocket(); // WebSocket 재연결
         }
     }
+
 
     private void updateUIAfterEdit(String title, String content, String imageUrl, String videoUrl) {
         TextView titleTextView = findViewById(R.id.titleInput);
@@ -408,6 +413,7 @@ public class PostDetailActivity extends AppCompatActivity {
             MediaController mediaController = new MediaController(this);
             mediaController.setAnchorView(postVideoView);
             postVideoView.setMediaController(mediaController);
+
             postVideoView.setOnPreparedListener(mp -> postVideoView.start());
             postImageView.setVisibility(View.GONE);
         } else {
@@ -509,21 +515,35 @@ public class PostDetailActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     try {
                         JSONObject messageJson = new JSONObject(message);
-                        String author = messageJson.getString("author");
-                        String content = messageJson.getString("content");
-                        String date = messageJson.getString("date");
-                        String profileImageUrl = messageJson.optString("profileImageUrl", null);
-                        String authorId = messageJson.getString("authorId"); // 추가된 작성자 ID
-                        String commentId = messageJson.getString("commentId");
+                        String commentId = messageJson.getString("commentId"); // 고유한 댓글 ID
+                        // 중복 확인 로직 추가
+                        boolean isDuplicate = false;
+                        for (Comment comment : commentList) {
+                            if (comment.getCommentId().equals(commentId)) {
+                                isDuplicate = true;
+                                break;
+                            }
+                        }
 
-                        // Comment 객체에 프로필 이미지 URL 포함하여 추가
-                        commentList.add(new Comment(author, content, date, profileImageUrl, authorId, commentId));
-                        commentAdapter.notifyDataSetChanged();
+                        if (!isDuplicate) {
+                            String author = messageJson.getString("author");
+                            String content = messageJson.getString("content");
+                            String date = messageJson.getString("date");
+                            String profileImageUrl = messageJson.optString("profileImageUrl", null);
+                            String authorId = messageJson.getString("authorId");
+
+                            // Comment 객체에 프로필 이미지 URL 포함하여 추가
+                            commentList.add(new Comment(author, content, date, profileImageUrl, authorId, commentId));
+                            commentAdapter.notifyDataSetChanged();
+                        } else {
+                            Log.d("onMessage", "중복 댓글 무시: " + commentId);
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 });
             }
+
 
             @Override
             public void onClose(int code, String reason, boolean remote) {
@@ -559,13 +579,25 @@ public class PostDetailActivity extends AppCompatActivity {
                     JSONArray commentsArray = new JSONArray(response.toString());
                     for (int i = 0; i < commentsArray.length(); i++) {
                         JSONObject commentObject = commentsArray.getJSONObject(i);
-                        String author = commentObject.getString("author");
-                        String content = commentObject.getString("content");
-                        String date = commentObject.getString("date");
-                        String profileImageUrl = commentObject.optString("profileImageUrl", null);
-                        String authorId = commentObject.getString("authorId"); // 추가된 작성자 ID
                         String commentId = commentObject.getString("commentId");
-                        commentList.add(new Comment(author, content, date, profileImageUrl, authorId, commentId));
+
+                        // 중복 댓글 확인
+                        boolean isDuplicate = false;
+                        for (Comment comment : commentList) {
+                            if (comment.getCommentId().equals(commentId)) {
+                                isDuplicate = true;
+                                break;
+                            }
+                        }
+
+                        if (!isDuplicate) {
+                            String author = commentObject.getString("author");
+                            String content = commentObject.getString("content");
+                            String date = commentObject.getString("date");
+                            String profileImageUrl = commentObject.optString("profileImageUrl", null);
+                            String authorId = commentObject.getString("authorId");
+                            commentList.add(new Comment(author, content, date, profileImageUrl, authorId, commentId));
+                        }
                     }
 
                     runOnUiThread(() -> commentAdapter.notifyDataSetChanged());
@@ -575,6 +607,7 @@ public class PostDetailActivity extends AppCompatActivity {
             }
         }).start();
     }
+
     private void sendComment() {
         String commentText = commentInput.getText().toString().trim();
         if (!commentText.isEmpty()) {
@@ -594,6 +627,10 @@ public class PostDetailActivity extends AppCompatActivity {
 
                 Log.d("sendComment", "Sending comment JSON: " + commentJson.toString());
                 webSocketClient.send(commentJson.toString());
+
+                // **푸시 알림 요청 추가**
+                sendPushNotificationRequest(commentText);
+
             } catch (JSONException e) {
                 Log.e("sendComment", "JSONException occurred: " + e.getMessage());
                 e.printStackTrace();
@@ -603,6 +640,39 @@ public class PostDetailActivity extends AppCompatActivity {
         } else {
             Toast.makeText(PostDetailActivity.this, "댓글 내용을 입력하세요.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void sendPushNotificationRequest(String commentText) {
+        new Thread(() -> {
+            try {
+                // 서버 URL
+                URL url = new URL("http://10.0.2.2:8888/kch_server/SendPushNotification");
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("POST");
+                conn.setRequestProperty("Content-Type", "application/json");
+                conn.setDoOutput(true);
+
+                // 요청 JSON 데이터 생성
+                JSONObject requestJson = new JSONObject();
+                requestJson.put("postNum", postNum); // 게시글 번호
+                requestJson.put("sessionId", sessionId); // 현재 세션, 이걸로 게시글작성자랑 비교후 자기글에 자기가 달을때 알림방지
+                requestJson.put("commentContent", commentText); // 댓글 내용
+
+                OutputStreamWriter writer = new OutputStreamWriter(conn.getOutputStream());
+                writer.write(requestJson.toString());
+                writer.flush();
+                writer.close();
+
+                int responseCode = conn.getResponseCode();
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    Log.d("sendPushNotification", "Push notification request succeeded.");
+                } else {
+                    Log.e("sendPushNotification", "Failed to send push notification. Response code: " + responseCode);
+                }
+            } catch (Exception e) {
+                Log.e("sendPushNotification", "Error occurred while sending push notification.", e);
+            }
+        }).start();
     }
 
     private void incrementViewCount(String postNum) {

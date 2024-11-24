@@ -142,6 +142,8 @@ public class CreatePostServlet extends HttpServlet {
                 return "gif";
             case "video/mp4":
                 return "mp4";
+            case "image/webp":
+            	return "webp";
             default:
                 return null;
         }

@@ -136,4 +136,14 @@ public class HomeActivity extends AppCompatActivity {
         transaction.show(fragmentToShow);
         transaction.commit();
     }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        // WindowManager 관련 리소스 정리
+        if (getWindow() != null) {
+            getWindow().clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        }
+    }
+
 }

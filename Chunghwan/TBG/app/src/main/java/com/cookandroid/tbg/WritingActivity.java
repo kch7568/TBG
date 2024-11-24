@@ -257,7 +257,6 @@ public class WritingActivity extends AppCompatActivity {
 
     private void submitPost(String sessionId, String title, String content, String category) {
         try {
-            // 작성 또는 수정에 따라 URL 설정
             String apiUrl = isEditMode ? UPDATE_POST_URL : CREATE_POST_URL;
             String boundary = "----WebKitFormBoundary" + UUID.randomUUID();
             HttpURLConnection conn = (HttpURLConnection) new URL(apiUrl).openConnection();
@@ -269,15 +268,17 @@ public class WritingActivity extends AppCompatActivity {
                 writeMultipartData(os, boundary, sessionId, title, content, category);
 
                 if (selectedMediaUri != null) {
-                    writeMediaData(os, boundary); // 새 미디어 업로드
+                    writeMediaData(os, boundary); // 새로 선택한 미디어 업로드
                 } else if (isEditMode) {
                     // 기존 미디어 유지 정보를 전달
-                    if (existingImageUrl != null) {
+                    if (existingImageUrl != null && !existingImageUrl.isEmpty()) {
                         writeExistingMediaData(os, boundary, "image", existingImageUrl);
-                    } else if (existingVideoUrl != null) {
+                    }
+                    if (existingVideoUrl != null && !existingVideoUrl.isEmpty()) {
                         writeExistingMediaData(os, boundary, "video", existingVideoUrl);
                     }
                 }
+
 
                 os.write(("--" + boundary + "--\r\n").getBytes());
             }
@@ -288,6 +289,7 @@ public class WritingActivity extends AppCompatActivity {
             runOnUiThread(() -> showToast("글 등록 중 오류가 발생했습니다."));
         }
     }
+
 
 
     private void writeExistingMediaData(OutputStream os, String boundary, String mediaType, String existingMediaUrl) throws IOException {
@@ -315,11 +317,23 @@ public class WritingActivity extends AppCompatActivity {
         os.write((twoHyphens + boundary + lineEnd).getBytes());
         os.write(("Content-Disposition: form-data; name=\"category\"" + lineEnd + lineEnd + category + lineEnd).getBytes());
 
+        // 수정 요청인 경우 postNum 추가
         if (isEditMode) {
             os.write((twoHyphens + boundary + lineEnd).getBytes());
             os.write(("Content-Disposition: form-data; name=\"postNum\"" + lineEnd + lineEnd + postNum + lineEnd).getBytes());
+
+            // 기존 이미지와 비디오 URL 전송
+            if (existingImageUrl != null && !existingImageUrl.isEmpty()) {
+                os.write((twoHyphens + boundary + lineEnd).getBytes());
+                os.write(("Content-Disposition: form-data; name=\"existingImageUrl\"" + lineEnd + lineEnd + existingImageUrl + lineEnd).getBytes());
+            }
+            if (existingVideoUrl != null && !existingVideoUrl.isEmpty()) {
+                os.write((twoHyphens + boundary + lineEnd).getBytes());
+                os.write(("Content-Disposition: form-data; name=\"existingVideoUrl\"" + lineEnd + lineEnd + existingVideoUrl + lineEnd).getBytes());
+            }
         }
     }
+
 
     private void writeMediaData(OutputStream os, String boundary) throws IOException {
         try (InputStream inputStream = getContentResolver().openInputStream(selectedMediaUri)) {
