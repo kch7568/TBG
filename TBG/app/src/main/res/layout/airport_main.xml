@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F0EBFB"
+    android:orientation="vertical"
+    tools:context=".AirportMainActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/airport_between_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/back_button"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@drawable/back_key" />
+
+        <android.widget.Button
+            android:id="@+id/airport_betweenBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginEnd="170dp"
+            app:layout_constraintStart_toEndOf="@+id/back_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/layout_background_train"
+            android:text="왕복"
+            android:textSize="6pt" />
+
+        <ImageView
+            android:id="@+id/bus_icon"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="10dp"
+            app:layout_constraintStart_toEndOf="@+id/airport_betweenBtn"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/airport_icon" />
+
+        <android.widget.Button
+            android:id="@+id/airport_onewayBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginStart="10dp"
+            app:layout_constraintStart_toEndOf="@+id/bus_icon"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/layout_background_train3"
+            android:text="편도"
+            android:textSize="6pt" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/airport_between_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/airport_between_1">
+
+        <TextView
+            android:id="@+id/start_airport"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/layout_background_train4"
+            android:padding="7dp"
+            android:hint="  출발지선택"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="7pt" />
+
+        <Button
+            android:id="@+id/airport_between_startDay"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="3dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/start_airport"
+            android:background="@drawable/search1" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/airport_between_3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/airport_between_2">
+
+        <TextView
+            android:id="@+id/arrive_airport"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/layout_background_train4"
+            android:padding="7dp"
+            android:hint="  도착지선택"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            android:textSize="7pt" />
+
+        <Button
+            android:id="@+id/airport_between_arriveDay"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="3dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/arrive_airport"
+            android:background="@drawable/search1" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/airport_between_4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="15dp"
+        app:layout_constraintTop_toBottomOf="@+id/airport_between_3">
+
+        <android.widget.Button
+            android:id="@+id/airport_between_Startcalendar"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:background="@drawable/layout_background_train4"
+            android:text="가는 날"
+            android:textSize="6pt"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/between_serch_icon"
+            app:layout_constraintHorizontal_bias="0.371"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <android.widget.Button
+            android:id="@+id/airport_between_Arrivecalendar"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/between_serch_icon"
+            android:background="@drawable/layout_background_train4"
+            app:layout_constraintStart_toEndOf="@+id/airport_between_Startcalendar"
+            android:text="오는 날"
+            android:textSize="6pt"
+            android:textStyle="bold" />
+
+        <android.widget.Button
+            android:id="@+id/between_serch_icon"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="20dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/airport_between_Arrivecalendar"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:background="@drawable/serch_icon" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/airport_between_5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="15dp"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/airport_between_4">
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="일반석"
+                android:textSize="5pt"
+                android:layout_marginEnd="3dp"/>
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="프리미엄 일반석"
+                android:textSize="5pt"
+                android:layout_marginEnd="3dp"/>
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="비즈니스"
+                android:textSize="5pt"
+                android:layout_marginEnd="3dp"/>
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="퍼스트"
+                android:textSize="5pt" />
+        </RadioGroup>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/airport_between_6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/layout_background_train2"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/airport_between_5">
+
+        <TextView
+            android:id="@+id/airport_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="100dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:padding="5dp"
+            android:text="탑승객 :"
+            android:textSize="8pt"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/airport_between_minusBtn"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center"
+            app:layout_constraintStart_toEndOf="@+id/airport_parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/minus_icon"
+            android:backgroundTint="@color/white"/>
+
+        <TextView
+            android:id="@+id/airport_between_count"
+            android:layout_width="30dp"
+            android:layout_height="38dp"
+            android:layout_gravity="center"
+            app:layout_constraintStart_toEndOf="@+id/airport_between_minusBtn"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:padding="7dp"
+            android:text="0"
+            android:textSize="8pt"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/airport_between_addBtn"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center"
+            app:layout_constraintStart_toEndOf="@+id/airport_between_count"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@drawable/plus_icon"
+            android:backgroundTint="@color/white"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:layout_constraintStart_toEndOf="@+id/airport_between_addBtn"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:padding="5dp"
+            android:text="명"
+            android:textSize="8pt"
+            android:textStyle="bold" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/airport_between_7"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.37"
+        app:layout_constraintWidth_percent="1"
+        android:layout_marginTop="15dp"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/airport_between_6">
+
+        <ImageView
+            android:id="@+id/train_photo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/airport_photo"
+            android:adjustViewBounds="true"
+            android:background="#F0EBFB" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/airport_between_9"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/airport_between_7">
+
+        <TextView
+            android:id="@+id/train_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:gravity="center"
+            android:padding="7dp"
+            android:text="@string/text1"
+            android:textColor="@color/black"
+            android:textStyle="normal"
+            android:textSize="7pt" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/airport_between_10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@+id/airport_between_9">
+
+        <ImageView
+            android:id="@+id/go_trainBtn"
+            android:layout_width="60dp"
+            android:layout_marginTop="2dp"
+            android:layout_height="60dp"
+            android:background="@drawable/trainbtn"
+            />
+        <ImageView
+            android:id="@+id/go_busBtn"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/busbtn"
+            />
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

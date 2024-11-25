@@ -1,0 +1,27 @@
+<!-- res/layout/activity_main.xml -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TestActivity">
+
+    <!-- 기본 캘린더 뷰 -->
+    <CalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp" />
+
+    <!-- 날짜 표시 텍스트 -->
+    <TextView
+        android:id="@+id/selectedDateTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/calendarView"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="날짜를 선택하세요"
+        android:textSize="18sp"
+        android:textColor="#000" />
+
+</RelativeLayout>

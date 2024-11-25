@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.TBG"
+        tools:targetApi="31">
+
+        <activity
+            android:name=".TrainActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".AirportArrivePlaceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AirportStartPlaceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TestActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".BusArrivePlaceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".BusStartPlaceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TrainStartPlaceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Railroad2CalendarActivity"
+            android:exported="false" />
+        <activity
+            android:name=".InformationActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ReservePage1Activity"
+            android:exported="false" />
+        <activity
+            android:name=".BusActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".TrainArrivePlaceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Register2Activity"
+            android:exported="false" />
+        <activity
+            android:name=".AirportMainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
