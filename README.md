@@ -33,6 +33,14 @@
 |---------|---------|---------|---------|---------|---------|---------|---------|---------|
 | <img src="https://github.com/user-attachments/assets/5a1a479c-4403-4e7a-8dce-7415cd1482dd" width="100"> | <img src="https://github.com/user-attachments/assets/9cf9b811-cfd1-4fdc-af50-45b72c08c467" width="100"> | <img src="https://github.com/user-attachments/assets/5f5836de-6c62-44fb-8431-1cc952748499" width="100"> | <img src="https://github.com/user-attachments/assets/8541c830-6664-4648-9c12-d7a213f0347b" width="100"> | <img src="https://github.com/user-attachments/assets/4c68cc2f-08fe-4d21-87d6-aa04656ecc8a" width="100"> | <img src="https://github.com/user-attachments/assets/e2b7b395-c65e-47a9-b836-280a48bf1cb0" width="100"> | <img src="https://github.com/user-attachments/assets/57876038-5d88-4b22-862c-c0480f60e30f" width="100"> |<img src="https://github.com/user-attachments/assets/a9ce47b3-eaba-4214-829f-50e15ae8039f" width="100"> |<img src="https://github.com/user-attachments/assets/31291fcc-e20f-4caf-9a60-5042ecc12c61" width="100"> | <img src="" width="100">  <img src="" width="100"> |    
 
+고속버스. 철도는 비행기와 동일합니다.
+
+
+## 🔧 보완점
+
+- 휴대폰 기기별 해상도에 대응하는 디자인을 만드는 것이 필요했습니다.
+- 첫 설계를 확실하게 정하고 개발하는것의 중요성을 느끼게 되었습니다.
+   
 ## 👥 함께 해준 팀원
 
 - **김충환** - 백엔드 개발, 데이터베이스 관리
