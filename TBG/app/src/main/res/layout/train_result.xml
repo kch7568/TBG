@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/appbg">
+
+    <android.widget.Button
+        android:id="@+id/backspace"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/back_key"/>
+
+    <!-- 더미 이미지 (백스페이스와 같은 크기) -->
+    <ImageView
+        android:id="@+id/dummy"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"/>
+
+    <!-- 왼쪽 텍스트, 중앙 텍스트, 오른쪽 텍스트 -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/resulttext"
+        app:layout_constraintStart_toEndOf="@id/backspace"
+        app:layout_constraintEnd_toStartOf="@id/dummy"
+        android:orientation="horizontal">
+
+        <!-- 왼쪽 텍스트 (인원) -->
+        <TextView
+            android:id="@+id/humanCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="인원수"
+            android:textColor="@color/black"
+            android:layout_marginTop="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- 스크롤 가능한 컨텐츠 영역 -->
+    <LinearLayout
+        android:id="@+id/noticeboard"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="8dp"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/backspace"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <!-- 게시글 목록을 위한 RecyclerView -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/postsRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="0dp" />
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

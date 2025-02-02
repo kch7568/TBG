@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+
+    <application
+        android:name=".MyApplication"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.TBG"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="31"> <!-- 테스트 -->
+
+
+
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".ForgotPWActivity" />
+        <activity android:name=".AppMainActivity" />
+
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".PWresetActivity"/>
+        <activity android:name=".SettingActivity"/>
+        <activity android:name=".SupportActivity"/>
+        <activity android:name=".FavoritesActivity"/>
+        <activity android:name=".FaqActivity"/>
+        <activity android:name=".HomeActivity"/>
+        <activity android:name=".WritingActivity"/>
+        <activity android:name=".MyPostsActivity"/>
+
+        <activity android:name=".InformationActivity"/>
+        <activity android:name=".PostDetailActivity"/>
+        <activity android:name=".FlightDetailActivity_t"/>
+
+        <activity android:name=".AirportArrivePlaceActivity"/>
+        <activity android:name=".AirportMainActivity"/>
+        <activity android:name=".AirportStartPlaceActivity"/>
+        <activity android:name=".AirportResultActivity" />
+
+        <activity android:name=".BusArrivePlaceActivity"/>
+        <activity android:name=".BusStartPlaceActivity"/>
+        <activity android:name=".BusResultActivity"/>
+        <activity android:name=".BusActivity"/>
+
+
+
+        <activity android:name=".TrainStartPlaceActivity"/>
+        <activity android:name=".TrainArrivePlaceActivity"/>
+        <activity android:name=".TrainResultActivity"/>
+        <activity android:name=".TrainActivity"/>
+
+
+
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <activity android:name=".FilghtMain_t"/>
+
+
+
+        <!-- AdMob 설정 -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713"/>
+
+        <!--액티비티 추가시 <application> 안에 추가해줘야함-->
+        <activity
+            android:name=".MainActivity"
+
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+
+
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

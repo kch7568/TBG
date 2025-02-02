@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/appbg">
+
+    <!-- 뒤로 가기 버튼 -->
+    <android.widget.Button
+        android:id="@+id/backspace"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/back_key"/>
+
+    <!-- 스크롤 가능한 컨텐츠 영역 -->
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/backspace"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp">
+
+            <!-- 둥근 사각형 배경을 가진 ConstraintLayout -->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/menuBackground"
+                android:layout_width="wrap_content"
+                android:padding="30dp"
+                android:layout_height="0dp"
+                android:background="@drawable/accountbg"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintWidth_percent="0.9"
+                app:layout_constraintHeight_percent="0.78">
+
+                <!-- 상담 및 문의 아이콘과 텍스트 -->
+                <ImageView
+                    android:id="@+id/lockIcon"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/ic_inquiry"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="20dp"/>
+
+                <TextView
+                    android:id="@+id/passwordChangeTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="상담 및 문의"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    android:textColor="#000000"
+                    app:layout_constraintTop_toBottomOf="@id/lockIcon"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="10dp"/>
+
+                <!-- 문제 관련 텍스트와 아이콘 -->
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/layout_background_stroke"
+                    app:layout_constraintTop_toBottomOf="@id/passwordChangeTitle"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="20dp"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/titleText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="겪고 있는 문제에 대하여"
+                        android:textSize="25sp"
+                        android:textStyle="bold"
+                        android:textColor="#000000"
+                        android:textAlignment="viewStart"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
+                    <ImageView
+                        android:id="@+id/kakaoIcon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/kakao_icon"
+                        app:layout_constraintTop_toBottomOf="@id/titleText"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="25dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="카카오톡 ID : youjin3184"
+                        android:textSize="20sp"
+                        android:textColor="#000000"
+                        android:textAlignment="viewStart"
+                        app:layout_constraintTop_toTopOf="@id/kakaoIcon"
+                        app:layout_constraintStart_toEndOf="@id/kakaoIcon"
+                        android:layout_marginStart="8dp"/>
+
+                    <TextView
+                        android:id="@+id/m3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="OR"
+                        android:textSize="30sp"
+                        android:textColor="#000000"
+                        android:textAlignment="viewStart"
+                        app:layout_constraintTop_toBottomOf="@id/kakaoIcon"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginTop="25dp"/>
+
+                    <ImageView
+                        android:id="@+id/phoneIcon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:src="@drawable/phone_icon"
+                        app:layout_constraintTop_toBottomOf="@id/m3"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="25dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="010.3811.7568"
+                        android:textSize="25sp"
+                        android:textColor="#000000"
+                        android:textAlignment="viewStart"
+                        app:layout_constraintTop_toTopOf="@id/phoneIcon"
+                        app:layout_constraintStart_toEndOf="@id/phoneIcon"
+                        android:layout_marginStart="8dp"/>
+
+                    <TextView
+                        android:id="@+id/m5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="문의 해주시길 바랍니다."
+                        android:textSize="25sp"
+                        android:textColor="#000000"
+                        android:textAlignment="viewStart"
+                        app:layout_constraintTop_toBottomOf="@id/phoneIcon"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="25dp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="관리자의 지시에 잘 응해주세요."
+                        android:textSize="15sp"
+                        android:textColor="#818181"
+                        android:textAlignment="viewStart"
+                        app:layout_constraintTop_toBottomOf="@id/m5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="15dp"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!-- 아래에 위치한 TBG 로고 -->
+            <ImageView
+                android:id="@+id/tbgIcon"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:src="@drawable/tbgword"
+                app:layout_constraintTop_toBottomOf="@id/menuBackground"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="50dp"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

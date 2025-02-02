@@ -1,0 +1,84 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- 출발지 -->
+    <EditText
+        android:id="@+id/et_origin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="출발지 (예: ICN)" />
+
+    <!-- 도착지 -->
+    <EditText
+        android:id="@+id/et_destination"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="도착지 (예: NRT)" />
+
+    <!-- 출발 날짜 -->
+    <EditText
+        android:id="@+id/et_departure_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="출발일 (예: 2024-12-01)" />
+
+    <!-- 복귀 날짜 -->
+    <EditText
+        android:id="@+id/et_return_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="복귀일 (선택 사항)" />
+
+    <!-- 성인 수 -->
+    <EditText
+        android:id="@+id/et_adults"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="성인 수 (예: 1)" />
+
+    <!-- 좌석 등급 -->
+    <EditText
+        android:id="@+id/et_class"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="좌석 등급 (ECONOMY, BUSINESS 등)" />
+
+    <!-- 여행 유형 선택 -->
+    <RadioGroup
+        android:id="@+id/rg_trip_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp">
+
+        <RadioButton
+            android:id="@+id/rb_one_way"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="편도" />
+
+        <RadioButton
+            android:id="@+id/rb_round_trip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="왕복" />
+    </RadioGroup>
+
+    <!-- 검색 버튼 -->
+    <Button
+        android:id="@+id/btn_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="검색" />
+
+    <!-- 결과 RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp" />
+</LinearLayout>

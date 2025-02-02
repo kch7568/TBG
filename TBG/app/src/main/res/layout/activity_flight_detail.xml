@@ -1,0 +1,36 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tv_detail_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="가격"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/tv_detail_departure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="출발 정보"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/tv_detail_arrival"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="도착 정보"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:id="@+id/tv_detail_return"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="복귀 정보" />
+</LinearLayout>

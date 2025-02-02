@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="6dp"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp">
+
+        <!-- 우측 상단 삭제 버튼 -->
+        <ImageButton
+            android:id="@+id/deleteCommentButton"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_delete"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="댓글 삭제 버튼"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp" />
+
+        <!-- 댓글이 달린 게시글 제목 -->
+        <TextView
+            android:id="@+id/relatedPostTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="게시글 제목: 즐거운 제주 여행 가이드"
+            android:textSize="14sp"
+            android:textColor="#333333"
+            android:textStyle="bold"
+            android:layout_alignParentStart="true"
+            android:layout_marginEnd="40dp"
+        android:layout_marginTop="8dp" />
+
+        <!-- 작성일자 -->
+        <TextView
+            android:id="@+id/commentDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2024-11-23 14:00"
+            android:textSize="12sp"
+            android:textColor="#999999"
+            android:layout_below="@id/relatedPostTitle"
+            android:layout_marginTop="4dp"
+            android:layout_alignParentStart="true" />
+
+        <!-- 댓글 내용 -->
+        <TextView
+            android:id="@+id/commentContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="댓글 내용입니다. 이 부분에 댓글 내용을 표시합니다."
+            android:textSize="14sp"
+            android:textColor="#333333"
+            android:layout_below="@id/commentDate"
+            android:layout_marginTop="8dp" />
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
