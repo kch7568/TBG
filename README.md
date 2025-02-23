@@ -43,9 +43,9 @@
    
 ## 👥 함께 해준 팀원
 
-- **김충환** - 백엔드 개발, 데이터베이스 관리
-- **최재용** - 프론트엔드 개발, UI/UX 디자인
-- **손승범** - 프론트엔드 개발, UI/UX 디자인
+- **[김충환](https://github.com/kch7568?tab=repositories)** - 백엔드 개발, 데이터베이스 관리
+- **[최재용](https://github.com/IblackgoatI)** - 프론트엔드 개발, UI/UX 디자인
+- **[손승범](https://github.com/seungbum1)** - 프론트엔드 개발, UI/UX 디자인
 
 ## 📄 라이센스
 
